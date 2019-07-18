@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/link852258/WebCadeau/issues"
   },
-  "homepage": "https://github.com/link852258/WebCadeau#readme"
+  "homepage": "https://github.com/link852258/WebCadeau#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
