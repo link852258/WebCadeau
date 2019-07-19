@@ -1,26 +1,12 @@
-//Ceci est l'entré du programme
-/*const mysql = require('mysql');
-const conn = mysql.createConnection({
-    host : '69.17.245.17',
-    port : '3306',
-    user : 'WEBCADEAU',
-    password : 'Webcadeau!',
-    database : 'WEBCADEAU'
-});
-
-conn.connect((err)=>{
-    if(err){
-        console.error(err.stack);
-        return;
-    }
-    console.log('connected as id ' + conn.threadId);
-    conn.end();
-});*/
-
 //**********SERVER**********//
 const express = require('express');
+var BD = require('./BD.js');
 const app = express();
 const PORT = 3000;
+var conn = new BD();
+conn.ouvrirconnexion();
+//ouvre la connection à la bd
+
 
 app.set('views', __dirname + '/vues');
 
