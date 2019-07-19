@@ -1,0 +1,36 @@
+<%- include partiels/Header.ejs %>
+    
+        <a href="Connexion">Connexion</a>
+        <a href="Inscription">Inscription</a>
+        <form method="Post">
+            <label for="txtNomUtilisateur">Nom d'utilisateur</label>
+            <input type="text" name="txtNomUtilisateur" id="txtNomUtilisateur" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required>
+
+            <label for="psdMotDePasse">Mot de passe</label>
+            <input type="password" name="psdMotDePasse" id="psdMotDePasse" required>
+
+            <label for="psdConfirmMotDePasse">Confirmer mot de passe</label>
+            <input type="password" name="psdConfirmMotDePasse" id="psdConfirmMotDePasse" required>
+
+            <input type="submit" value="Soumettre">
+        </form>
+    </body>
+    <script>
+        var password = document.getElementById("psdMotDePasse"),
+        confirm_password = document.getElementById("psdConfirmMotDePasse");
+    
+        function validatePassword(){
+            if(password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Les mot de passe ne sont pas identique.");
+            } else {
+                confirm_password.setCustomValidity('');
+            }
+        }
+        
+        password.onchange = validatePassword;
+        confirm_password.onkeyup = validatePassword;
+    </Script>
+</html>

@@ -29,5 +29,22 @@ app.set('view engine', 'ejs');
 app.get('/',(req,res)=>{
     res.render('Index');
 });
+app.post('/',(req,res)=>{
+    res.render('Index');
+});
+
+app.get('/Connexion',(req,res)=>{
+    res.render('Index');
+});
+app.post('/Connexion',(req,res)=>{
+    res.render('Index');
+});
+
+app.get('/Inscription',(req,res)=>{
+    res.render('Inscription');
+});
+app.post('/Inscription',(req,res)=>{
+    res.render('Inscription');
+});
 
 app.listen(PORT);
