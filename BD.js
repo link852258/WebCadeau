@@ -1,10 +1,10 @@
 module.exports = function BD() {
     //Base de donnée
     const mysql = require('mysql');
-
+    var conn = "";
     //Connexion à la base de données
     this.ouvrirconnexion = function() {
-        const conn = mysql.createConnection({
+            conn = mysql.createConnection({
             host: '69.17.245.17',
             port: '3306',
             user: 'WEBCADEAU',
@@ -22,9 +22,9 @@ module.exports = function BD() {
         });
     }
 
-    this.insererUtilisateur = function(username,password,email,nom,prenom){
-        conn.query('CALL INSERERUTILISATEUR(?,?,?,?,?)',[{username,password,email,nom,prenom}],(err,results,fields)=>{
-            
+    this.insererUtilisateur = function(username,password,email,prenom,nom){
+        conn.query('CALL INSERERUTILISATEUR(?,?,?,?,?)',[username,password,email,prenom,nom],(err,results,fields)=>{
+            conn.end();
         });
     }
 

@@ -1,42 +1,66 @@
 <%- include partiels/Header.ejs %>
-    
-        <a href="Connexion">Connexion</a>
-        <a href="Inscription">Inscription</a>
-        <form method="Post">
-            <label for="txtPrenom">Prenom</label>
-            <input type="text" name="txtPrenom" id="txtPrenom" required>
 
-            <label for="txtNom">Nom</label>
-            <input type="text" name="txtNom" id="txtNom" required>
-            
-            <label for="txtNomUtilisateur">Nom d'utilisateur</label>
-            <input type="text" name="txtNomUtilisateur" id="txtNomUtilisateur" required>
+<a href="Connexion">Connexion</a>
+<a href="Inscription">Inscription</a>
+<form method="Post" id="formulaire">
+    <label for="txtPrenom">Prenom</label>
+    <input type="text" name="txtPrenom" id="txtPrenom" required>
 
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" required>
+    <label for="txtNom">Nom</label>
+    <input type="text" name="txtNom" id="txtNom" required>
 
-            <label for="psdMotDePasse">Mot de passe</label>
-            <input type="password" name="psdMotDePasse" id="psdMotDePasse" required>
+    <label for="txtNomUtilisateur">Nom d'utilisateur</label>
+    <input type="text" name="txtNomUtilisateur" id="txtNomUtilisateur" required>
 
-            <label for="psdConfirmMotDePasse">Confirmer mot de passe</label>
-            <input type="password" name="psdConfirmMotDePasse" id="psdConfirmMotDePasse" required>
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required>
 
-            <input type="submit" value="Soumettre">
-        </form>
-    </body>
-    <script>
-        var password = document.getElementById("psdMotDePasse"),
+    <label for="psdMotDePasse">Mot de passe</label>
+    <input type="password" name="psdMotDePasse" id="psdMotDePasse" required>
+
+    <label for="psdConfirmMotDePasse">Confirmer mot de passe</label>
+    <input type="password" name="psdConfirmMotDePasse" id="psdConfirmMotDePasse" required>
+
+    <input type="submit" value="Soumettre">
+</form>
+</body>
+<script>
+    var password = document.getElementById("psdMotDePasse"),
         confirm_password = document.getElementById("psdConfirmMotDePasse");
-    
-        function validatePassword(){
-            if(password.value != confirm_password.value) {
-                confirm_password.setCustomValidity("Les mot de passe ne sont pas identique.");
-            } else {
-                confirm_password.setCustomValidity('');
-            }
+
+    function validatePassword() {
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Les mot de passe ne sont pas identique.");
+        } else {
+            confirm_password.setCustomValidity('');
         }
-        
-        password.onchange = validatePassword;
-        confirm_password.onkeyup = validatePassword;
-    </Script>
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+</Script>
+<script>
+    window.onload = function () {
+
+        document.getElementById("formulaire").addEventListener("submit", function (event) {
+            //empeche le post de base
+            event.preventDefault();
+            //objet ajax pour les requete au serveur
+            var xhttp = new XMLHttpRequest();
+            var prenom = document.getElementById("txtPrenom").value;
+            var nom = document.getElementById("txtNom").value;
+            var nomUtilisateur = document.getElementById("txtNomUtilisateur").value;
+            var motDePasse = document.getElementById("psdMotDePasse").value;
+            var email = document.getElementById("email").value;
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                }
+            }
+            xhttp.open("POST", "Inscription", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("fPrenom=" + prenom + "&fNom=" + nom + "&fNomUtilisateur=" + nomUtilisateur + "&fMotDePasse=" + motDePasse + "&fEmail=" + email)
+        });
+    }
+</script>
+
 </html>
