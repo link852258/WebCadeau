@@ -28,6 +28,13 @@ module.exports = function BD() {
         });
     }
 
+    this.connexionUtilisateur = function(password,email){
+        conn.query('SELECT CONNEXIONUTILISATEUR(?,?)',[password,email],(err,results,fields)=>{
+            conn.end();
+            return results[0];
+        });
+    }
+
     this.modifierUtilisateur = function(id,password,prenom,nom){
         conn.query('CALL MODIFIERUTILISATEUR(?,?,?,?)',[id,password,prenom,nom],(err,results,fields)=>{
             conn.end();
