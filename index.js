@@ -1,6 +1,7 @@
 //**********SERVER**********//
 const express = require('express');
-const bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const BD = require('./BD.js');
 const app = express();
 const PORT = 3000;
@@ -9,6 +10,7 @@ var conn = new BD();
 conn.ouvrirconnexion();
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
 
 app.set('views', __dirname + '/vues');
 
@@ -18,7 +20,16 @@ app.get('/',(req,res)=>{
     res.render('Index');
 });
 app.post('/',(req,res)=>{
-    res.render('Index');
+    const password = req.body.psdMotDePasse;
+    const email = req.body.email;
+    var ID = conn.connexionUtilisateur(password,email);
+    res.cookie('cookieID' , ID).send('Cookie is set');
+    res.render('test');
+});
+
+app.get('/test',(req,res)=>{
+    res.render('test');
+    console.log("Cookies :  ", req.cookies)
 });
 
 app.get('/Connexion',(req,res)=>{
