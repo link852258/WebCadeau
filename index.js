@@ -58,7 +58,7 @@ app.post('/Inscription',(req,res)=>{
     const email = req.body.email;
     const prenom = req.body.txtPrenom;
     const nom = req.body.txtNom;
-    //conn.insererUtilisateur(username,hashPassword,email,prenom,nom);
+    conn.insererUtilisateur(username,hashPassword,email,prenom,nom);
     res.redirect('/');
 });
 
