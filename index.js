@@ -32,12 +32,13 @@ app.get('/Inscription',(req,res)=>{
     res.render('Inscription');
 });
 
+//
 app.post('/Inscription',(req,res)=>{
-    const username = req.body.fNomUtilisateur;
-    const password = req.body.fMotDePasse;
-    const email = req.body.fEmail;
-    const prenom = req.body.fPrenom;
-    const nom = req.body.fNom;
+    const username = req.body.txtNomUtilisateur;
+    const password = req.body.psdMotDePasse;
+    const email = req.body.email;
+    const prenom = req.body.txtPrenom;
+    const nom = req.body.txtNom;
     conn.insererUtilisateur(username,password,email,prenom,nom);
     res.render('Inscription');
 });
