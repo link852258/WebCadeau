@@ -39,28 +39,6 @@
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
 </Script>
-<script>
-    window.onload = function () {
 
-        document.getElementById("formulaire").addEventListener("submit", function (event) {
-            //empeche le post de base
-            event.preventDefault();
-            //objet ajax pour les requete au serveur
-            var xhttp = new XMLHttpRequest();
-            var prenom = document.getElementById("txtPrenom").value;
-            var nom = document.getElementById("txtNom").value;
-            var nomUtilisateur = document.getElementById("txtNomUtilisateur").value;
-            var motDePasse = document.getElementById("psdMotDePasse").value;
-            var email = document.getElementById("email").value;
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                }
-            }
-            xhttp.open("POST", "Inscription", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("fPrenom=" + prenom + "&fNom=" + nom + "&fNomUtilisateur=" + nomUtilisateur + "&fMotDePasse=" + motDePasse + "&fEmail=" + email)
-        });
-    }
-</script>
 
 </html>
