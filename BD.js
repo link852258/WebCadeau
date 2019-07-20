@@ -23,12 +23,14 @@ module.exports = function BD() {
     }
 
     this.insererUtilisateur = function(username,password,email,prenom,nom){
+        this.ouvrirconnexion();
         conn.query('CALL INSERERUTILISATEUR(?,?,?,?,?)',[username,password,email,prenom,nom],(err,results,fields)=>{
             conn.end();
         });
     }
 
     this.connexionUtilisateur = function(email,password,callBack){
+        this.ouvrirconnexion();
         conn.query('SELECT CONNEXIONUTILISATEUR(?,?) as ID',[email,password],(err,results,fields)=>{
             conn.end();
             callBack(results[0]);
@@ -36,6 +38,7 @@ module.exports = function BD() {
     }
 
     this.modifierUtilisateur = function(id,password,prenom,nom){
+        this.ouvrirconnexion();
         conn.query('CALL MODIFIERUTILISATEUR(?,?,?,?)',[id,password,prenom,nom],(err,results,fields)=>{
             conn.end();
         });

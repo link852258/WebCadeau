@@ -8,9 +8,8 @@ const PORT = 3000;
 var conn = new BD();
 
 const crypto = require('crypto');
-const hash = crypto.createHash('sha256');
 //ouvre la connection à la bd
-conn.ouvrirconnexion();
+//conn.ouvrirconnexion();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
@@ -23,6 +22,7 @@ app.get('/',(req,res)=>{
     res.render('Index');
 });
 app.post('/',(req,res)=>{
+    const hash = crypto.createHash('sha256');
     const password = req.body.psdMotDePasse;
     const hashPassword = hash.update(password).digest('hex');
     const email = req.body.email;
@@ -51,6 +51,7 @@ app.get('/Inscription',(req,res)=>{
 
 //
 app.post('/Inscription',(req,res)=>{
+    const hash = crypto.createHash('sha256');
     const username = req.body.txtNomUtilisateur;
     const password = req.body.psdMotDePasse;
     const hashPassword = hash.update(password).digest('hex');
@@ -66,6 +67,8 @@ app.get('/modification',(req,res)=>{
 });
 //TODO tester quand le cookie sera pret
 app.post('/modification',(req,res)=>{
+    const hash = crypto.createHash('sha256');
+    const id = req.cookies.cookieID.ID;
     const password = req.body.psdMotDePasse;
     const hashPassword = hash.update(password).digest('hex');
     const prenom = req.body.txtPrenom;
