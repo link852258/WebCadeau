@@ -28,10 +28,10 @@ module.exports = function BD() {
         });
     }
 
-    this.connexionUtilisateur = function(password,email){
-        conn.query('SELECT CONNEXIONUTILISATEUR(?,?)',[password,email],(err,results,fields)=>{
+    this.connexionUtilisateur = function(email,password,callBack){
+        conn.query('SELECT CONNEXIONUTILISATEUR(?,?) as ID',[email,password],(err,results,fields)=>{
             conn.end();
-            return results[0];
+            callBack(results[0]);
         });
     }
 

@@ -24,15 +24,18 @@ app.get('/',(req,res)=>{
 });
 app.post('/',(req,res)=>{
     const password = req.body.psdMotDePasse;
+    const hashPassword = hash.update(password).digest('hex');
     const email = req.body.email;
-    var ID = conn.connexionUtilisateur(password,email);
-    res.cookie('cookieID' , ID).send('Cookie is set');
-    res.render('test');
+    conn.connexionUtilisateur(email,hashPassword,(ID)=>{
+        res.cookie('cookieID' , ID).redirect('/test');
+    });
+    
+    //res.redirect('/test');
 });
 
 app.get('/test',(req,res)=>{
     res.render('test');
-    console.log("Cookies :  ", req.cookies)
+    console.log("Cookies :  ", req.cookies.cookieID.ID)
 });
 
 app.get('/Connexion',(req,res)=>{
