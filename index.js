@@ -1,10 +1,13 @@
 //**********SERVER**********//
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const BD = require('./BD.js');
 const app = express();
 const PORT = 3000;
 var conn = new BD();
+
+const crypto = require('crypto');
+const hash = crypto.createHash('sha256');
 //ouvre la connection à la bd
 conn.ouvrirconnexion();
 
@@ -36,11 +39,25 @@ app.get('/Inscription',(req,res)=>{
 app.post('/Inscription',(req,res)=>{
     const username = req.body.txtNomUtilisateur;
     const password = req.body.psdMotDePasse;
+    const hashPassword = hash.update(password).digest('hex');
     const email = req.body.email;
     const prenom = req.body.txtPrenom;
     const nom = req.body.txtNom;
-    conn.insererUtilisateur(username,password,email,prenom,nom);
-    res.render('Inscription');
+    //conn.insererUtilisateur(username,hashPassword,email,prenom,nom);
+    res.redirect('/');
+});
+
+app.get('/modification',(req,res)=>{
+    res.render('Modification')
+});
+//TODO tester quand le cookie sera pret
+app.post('/modification',(req,res)=>{
+    const password = req.body.psdMotDePasse;
+    const hashPassword = hash.update(password).digest('hex');
+    const prenom = req.body.txtPrenom;
+    const nom = req.body.txtNom;
+    conn.modifierUtilisateur(id,hashPassword,prenom,nom);
+    res.render('Modification')
 });
 
 app.listen(PORT);

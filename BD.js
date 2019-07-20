@@ -28,6 +28,12 @@ module.exports = function BD() {
         });
     }
 
+    this.modifierUtilisateur = function(id,password,prenom,nom){
+        conn.query('CALL MODIFIERUTILISATEUR(?,?,?,?)',[id,password,prenom,nom],(err,results,fields)=>{
+            conn.end();
+        });
+    }
+
     //Fermer la connexion
     this.fermerConnexion = function() {
         conn.end();
