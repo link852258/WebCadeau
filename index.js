@@ -8,8 +8,6 @@ const PORT = 3000;
 var conn = new BD();
 
 const crypto = require('crypto');
-//ouvre la connection à la bd
-//conn.ouvrirconnexion();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
@@ -27,15 +25,20 @@ app.post('/',(req,res)=>{
     const hashPassword = hash.update(password).digest('hex');
     const email = req.body.email;
     conn.connexionUtilisateur(email,hashPassword,(ID)=>{
-        res.cookie('cookieID' , ID).redirect('/test');
+        if(ID !== 0){
+            console.log(ID);
+            console.log("ca marche")
+            res.cookie('cookieID' , ID).redirect('/test');
+        }
+        else{
+            res.redirect('/');
+        }
     });
-    
-    //res.redirect('/test');
 });
 
 app.get('/test',(req,res)=>{
     res.render('test');
-    console.log("Cookies :  ", req.cookies.cookieID.ID)
+    console.log("Cookies :  ", req.cookies.cookieID);
 });
 
 app.get('/Connexion',(req,res)=>{

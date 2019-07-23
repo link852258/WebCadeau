@@ -33,7 +33,11 @@ module.exports = function BD() {
         this.ouvrirconnexion();
         conn.query('SELECT CONNEXIONUTILISATEUR(?,?) as ID',[email,password],(err,results,fields)=>{
             conn.end();
-            callBack(results[0]);
+            var id =0;
+            if(results[0].ID != null){
+                id = results[0].ID;
+            }
+            callBack(id);
         });
     }
 
