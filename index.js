@@ -11,6 +11,8 @@ const crypto = require('crypto');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(express.static('css'));
+app.use(express.static('js'));
 
 app.set('views', __dirname + '/vues');
 
@@ -28,7 +30,7 @@ app.post('/',(req,res)=>{
         if(ID !== 0){
             console.log(ID);
             console.log("ca marche")
-            res.cookie('cookieID' , ID).redirect('/test');
+            res.cookie('cookieID' , ID).redirect('/Actualiter');
         }
         else{
             res.redirect('/');
@@ -36,8 +38,8 @@ app.post('/',(req,res)=>{
     });
 });
 
-app.get('/test',(req,res)=>{
-    res.render('test');
+app.get('/Actualiter',(req,res)=>{
+    res.render('Actualiter');
     console.log("Cookies :  ", req.cookies.cookieID);
 });
 
