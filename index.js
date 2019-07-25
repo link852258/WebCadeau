@@ -82,4 +82,14 @@ app.post('/modification',(req,res)=>{
     res.render('Modification')
 });
 
+//Afficher la page de creation d'echange
+app.get('/CreerEchange',(req,res)=>{
+    res.render('CreerEchange');
+});
+
+//Appliquer le post lorsque le groupe sera creer
+app.post('/CreerEchange',(req,res)=>{
+    res.render('CreerEchange');
+});
+
 app.listen(PORT);

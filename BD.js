@@ -48,6 +48,24 @@ module.exports = function BD() {
         });
     }
 
+    this.creerEchange() = function(idCreateur,nomGroupe,theme,date,montant){
+        this.ouvrirconnexion();
+        //creer un echange
+        conn.query('CALL CREERGROUPE(?,?,?,?,?)',[idCreateur,nomGroupe,theme,date,montant],(err,results,fields)=>{
+            // va chercher le id de l'echange
+            conn.query('select DERNIERGROUPECREER(?) as idGroupe',[idCreateur],(err,results,fields)=>{
+            //ajouter les participant à l'échange
+            var idGroupe = results[0].idGroupe;
+            conn.query('call AjouterMembre(?,?)',[idGroupe,idCreateur],(err,results,fields)=>{
+                for(var i=0;i<10; i++){
+                    //TODO 
+                }
+                
+                });
+            });
+        });
+    };
+
     //Fermer la connexion
     this.fermerConnexion = function() {
         conn.end();
