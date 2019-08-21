@@ -1,22 +1,49 @@
 <%- include partiels/Header.ejs %>
 <form method="POST">
     <label>Nom de l'échange</label>
-    <input type="text">
+    <input type="text" name="txtTitreEchange" id="txtTitreEchange">
 
     <label>Date de l'echange</label>
-    <input type="date">
+    <input type="date" name="dteEchange" id="dteEchange">
 
     <label>Montant (approximatif)</label>
-    <input type="number">
+    <input type="number" name="nbrMontant" id="nbrMontant">
 
     <label>Theme(optionnel)</label>
-    <input type="text">
+    <input type="text" name="txtTheme" id="txtTheme">
 
     <label>Suggestion</label>
     <input type="radio">
-    <input type="button" value="Ajouter des membres">
+    <input type="button" value="Ajouter des membres" data-toggle="modal" data-target="#PopupAjoutMembres">
+
     <input type="submit" value="Creer Échange">
 </form>
 <%- include partiels/Scripts.ejs %>
+<%- include popups/AjouterMembres.ejs %>
+
+<!--TODO pour plus tard
+    <script>
+    var submitted = false;
+    $(document).ready(function () {
+        $('form').submit(function () {
+            submitted = true;
+        });
+        window.onbeforeunload = function () {
+            if (!submitted) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        return null
+                    }
+                };
+                xhttp.open("GET", "/SupprimerGroupe", true);
+                xhttp.send();
+            }
+        }
+    }
+
+    );
+</script>-->
 </body>
+
 </html>
