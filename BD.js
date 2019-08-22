@@ -1,11 +1,8 @@
 module.exports = function BD() {
     //Base de donnée
     const mysql = require('mysql');
-    var conn = "";
-    
-    //Connexion à la base de données
-    this.ouvrirconnexion = function () {
-        conn = mysql.createConnection({
+
+    var pool = mysql.createPool({
             host: '69.17.245.17',
             port: '3306',
             user: 'WEBCADEAU',
@@ -13,28 +10,17 @@ module.exports = function BD() {
             database: 'WEBCADEAU'
         });
 
-        //Retourne une erreur si la connexion à échoué
-        conn.connect((err) => {
-            if (err) {
-                console.error(err.stack);
-                return;
-            }
-        });
-    }
-
     //Ajouter un nouvel utilisateur dans la base de donnee
     this.insererUtilisateur = function (username, password, email, prenom, nom) {
-        this.ouvrirconnexion();
-        conn.query('CALL INSERERUTILISATEUR(?,?,?,?,?)', [username, password, email, prenom, nom], (err, results, fields) => {
-            conn.end();
+        pool.query('CALL INSERERUTILISATEUR(?,?,?,?,?)', [username, password, email, prenom, nom], (err, results, fields) => {
+            if(err) throw err;
         });
     }
 
     //Trouve s'il y a un utilisateur qui correspond aux information transmise
     this.connexionUtilisateur = function (email, password, callBack) {
-        this.ouvrirconnexion();
-        conn.query('SELECT CONNEXIONUTILISATEUR(?,?) as ID', [email, password], (err, results, fields) => {
-            conn.end();
+        pool.query('SELECT CONNEXIONUTILISATEUR(?,?) as ID', [email, password], (err, results, fields) => {
+            if(err) throw err;
             var id = 0;
             if (results[0].ID != null) {
                 id = results[0].ID;
@@ -45,21 +31,16 @@ module.exports = function BD() {
 
     //Modification de l'utilisateur
     this.modifierUtilisateur = function (id, password, prenom, nom) {
-        this.ouvrirconnexion();
-        conn.query('CALL MODIFIERUTILISATEUR(?,?,?,?)', [id, password, prenom, nom], (err, results, fields) => {
-            conn.end();
+        pool.query('CALL MODIFIERUTILISATEUR(?,?,?,?)', [id, password, prenom, nom], (err, results, fields) => {
+            if(err) throw err;
         });
     }
 
     //Creation d'un echange
     this.creerEchange = function (idCreateur, nomGroupe, theme, date, montant,callBack) {
-        this.ouvrirconnexion();
         //creer un echange
-        conn.query('CALL CREERGROUPE(?,?,?,?,?)', [idCreateur, nomGroupe, theme, date, montant], (err, results, fields) => {
-            if(err) {
-                console.log(err.sqlMessage);
-            }
-            conn.end();
+        pool.query('CALL CREERGROUPE(?,?,?,?,?)', [idCreateur, nomGroupe, theme, date, montant], (err, results, fields) => {
+            if(err) throw err;
             callBack();
         });
     }
@@ -84,23 +65,16 @@ module.exports = function BD() {
     }*/
 
     this.obtenirUtilisateur = function (callBack) {
-        this.ouvrirconnexion();
-        conn.query('CALL OBTENIRTOUSUTILISATEURS()', [], (err, results, fields) => {
-            conn.end();
+        pool.query('CALL OBTENIRTOUSUTILISATEURS()', (err, results, fields) => {
+            if(err) throw err;
             callBack(results[0])
         });
     }
 
     this.obtenirUtilisateurParam = function (texte,callBack) {
-        this.ouvrirconnexion();
-        conn.query('CALL OBTENIRTOUSUTILISATEURSPARAM(?)', [texte], (err, results, fields) => {
-            conn.end();
+        pool.query('CALL OBTENIRTOUSUTILISATEURSPARAM(?)', [texte], (err, results, fields) => {
+            if(err) throw err;
             callBack(results[0])
         });
-    }
-
-    //Fermer la connexion
-    this.fermerConnexion = function () {
-        conn.end();
     }
 }

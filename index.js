@@ -20,6 +20,7 @@ app.set('view engine', 'ejs');
 app.get('/',(req,res)=>{
     res.redirect('Connexion');
 });
+
 app.post('/',(req,res)=>{
     res.redirect('Connexion');
 });
@@ -32,6 +33,7 @@ app.get('/Actualiter',(req,res)=>{
 app.get('/Connexion',(req,res)=>{
     res.render('index');
 });
+
 app.post('/Connexion',(req,res)=>{
     const hash = crypto.createHash('sha256');
     const password = req.body.psdMotDePasse;
@@ -44,7 +46,7 @@ app.post('/Connexion',(req,res)=>{
             res.cookie('cookieID' , ID).redirect('/Actualiter');
         }
         else{
-            res.redirect('/index');
+            res.redirect('/');
         }
     });
 });
@@ -69,7 +71,7 @@ app.post('/Inscription',(req,res)=>{
 app.get('/modification',(req,res)=>{
     res.render('Modification')
 });
-//TODO tester quand le cookie sera pret
+
 app.post('/modification',(req,res)=>{
     const hash = crypto.createHash('sha256');
     const id = req.cookies.cookieID;
