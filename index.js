@@ -26,8 +26,11 @@ app.post('/',(req,res)=>{
 });
 
 app.get('/Actualiter',(req,res)=>{
-    res.render('Actualiter');
-    console.log("Cookies :  ", req.cookies.cookieID);
+    conn.obtenirActualiter(req.cookies.cookieID,(listeActualiter)=>{
+        res.render('Actualiter',{ListeActualiter: listeActualiter});
+    });
+    
+    //console.log("Cookies :  ", req.cookies.cookieID);
 });
 
 app.get('/Connexion',(req,res)=>{
@@ -41,8 +44,8 @@ app.post('/Connexion',(req,res)=>{
     const email = req.body.email;
     conn.connexionUtilisateur(email,hashPassword,(ID)=>{
         if(ID !== 0){
-            console.log(ID);
-            console.log("ca marche")
+            //console.log(ID);
+            //console.log("ca marche")
             res.cookie('cookieID' , ID).redirect('/Actualiter');
         }
         else{

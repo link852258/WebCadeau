@@ -77,4 +77,11 @@ module.exports = function BD() {
             callBack(results[0])
         });
     }
+
+    this.obtenirActualiter = function (utilisateurID,callBack){
+        pool.query('CALL AFFICHER_ACTUALITER(?)', [utilisateurID], (err, results, fields) => {
+            if(err) throw err;
+            callBack(results[0])
+        });
+    }
 }
