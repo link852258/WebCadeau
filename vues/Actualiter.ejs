@@ -1,6 +1,21 @@
 <%- include partiels/HeaderCon.ejs %>
-        <h1>Actualiter</h1>
-        <%- include popups/CreerEchange.ejs %>
-        <%- include partiels/Scripts.ejs %>
-    </body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Actualiter</h1>
+            <% ListeActualiter.forEach(function(actualiter){ %>
+            <div class="media border p-3 mb-2">
+                <div class="media-body">
+                    <h5 class="mt-0"><%= actualiter.TITRE %></h5>
+                    <p><%= actualiter.MESSAGE %></p>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+</div>
+<%- include popups/CreerEchange.ejs %>
+<%- include partiels/Scripts.ejs %>
+</body>
+
 </html>
