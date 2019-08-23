@@ -104,7 +104,7 @@ app.post('/CreerEchange', (req, res) => {
 
 });
 
-app.get('/Groupe',(req,res)=>{
+app.get('/Groupe/:id',(req,res)=>{
     res.render('Groupe');
 });
 
