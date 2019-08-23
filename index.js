@@ -99,6 +99,14 @@ app.post('/CreerEchange',(req,res)=>{
     
 });
 
+app.get('/Groupe',(req,res)=>{
+    res.render('Groupe');
+});
+
+app.post('/Groupe',(req,res)=>{
+    res.render('Groupe');
+});
+
 app.get('/ObtenirAmis',(req,res)=>{
     conn.obtenirUtilisateur((liste)=>{
         res.render('partiels/TableMembres',{Liste: liste});
