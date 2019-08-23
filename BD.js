@@ -67,21 +67,28 @@ module.exports = function BD() {
     this.obtenirUtilisateur = function (callBack) {
         pool.query('CALL OBTENIRTOUSUTILISATEURS()', (err, results, fields) => {
             if(err) throw err;
-            callBack(results[0])
+            callBack(results[0]);
         });
     }
 
     this.obtenirUtilisateurParam = function (texte,callBack) {
         pool.query('CALL OBTENIRTOUSUTILISATEURSPARAM(?)', [texte], (err, results, fields) => {
             if(err) throw err;
-            callBack(results[0])
+            callBack(results[0]);
         });
     }
 
     this.obtenirActualiter = function (utilisateurID,callBack){
         pool.query('CALL AFFICHER_ACTUALITER(?)', [utilisateurID], (err, results, fields) => {
             if(err) throw err;
-            callBack(results[0])
+            callBack(results[0]);
+        });
+    }
+
+    this.obtenirGroupesUtilisateur = function(utilisateurID,callBack){
+        pool.query('CALL AFFICHER_GROUPE_APPARTIENT(?)', [utilisateurID], (err, results, fields) => {
+            if(err) throw err;
+            callBack(results[0]);
         });
     }
 }

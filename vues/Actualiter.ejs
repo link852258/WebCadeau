@@ -1,18 +1,18 @@
 <%- include partiels/HeaderCon.ejs %>
 <div class="container">
     <div class="row">
-        <h1>Actualiter</h1>
-    </div>
-    <% ListeActualiter.forEach(function(actualiter){ %>
-    <div class="row">
-        <div class="jumbotron">
-            <div class="container">
-                <h1 class="display-4"><%= actualiter.TITRE %></h1>
-                <p class="lead"><%= actualiter.MESSAGE %></p>
+        <div class="col">
+            <h1>Actualiter</h1>
+            <% ListeActualiter.forEach(function(actualiter){ %>
+            <div class="media border p-3 mb-2">
+                <div class="media-body">
+                    <h5 class="mt-0"><%= actualiter.TITRE %></h5>
+                    <p><%= actualiter.MESSAGE %></p>
+                </div>
             </div>
+            <% }); %>
         </div>
     </div>
-    <% }); %>
 </div>
 <%- include popups/CreerEchange.ejs %>
 <%- include partiels/Scripts.ejs %>
