@@ -18,10 +18,25 @@ app.set('views', __dirname + '/vues');
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-    res.redirect('Connexion');
+    if (req.cookies.cookieID == null){
+        res.redirect('Connexion');
+    }
+    else {
+        res.redirect('Actualiter');
+    }
 });
 
 app.post('/', (req, res) => {
+    res.redirect('Connexion');
+});
+
+app.get('/Deconnexion', (req, res) => {
+    res.clearCookie('cookieID');
+    res.redirect('Connexion');
+});
+
+app.post('/Deconnexion', (req, res) => {
+    res.clearCookie('cookieID');
     res.redirect('Connexion');
 });
 
