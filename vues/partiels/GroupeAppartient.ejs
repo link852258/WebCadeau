@@ -8,7 +8,7 @@
     </thead>
     <tbody>
         <% ListeGroupe.forEach(function(groupe){ %>
-        <tr>
+        <tr class="table-row" data-href="/Groupe/<%= groupe.GROUPEID %>">
             <td><%= groupe.NOMGROUPE %></td>
             <td><%= groupe.CREATEUR %></td>
             <td><%= groupe.DATEECHANGE %></td>

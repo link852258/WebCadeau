@@ -80,23 +80,4 @@
       </div>
     </div>
   </div>
-
-<%- include partiels/Scripts.ejs %>
-<script>
-        var password = document.getElementById("psdMotDePasse"),
-            confirm_password = document.getElementById("psdConfirmMotDePasse");
-    
-        function validatePassword() {
-            if (password.value != confirm_password.value) {
-                confirm_password.setCustomValidity("Les mot de passe ne sont pas identique.");
-            } else {
-                confirm_password.setCustomValidity('');
-            }
-        }
-    
-        password.onchange = validatePassword;
-        confirm_password.onkeyup = validatePassword;
-    </Script>
-</body>
-
-</html>
+<%- include partiels/Footer.ejs %>

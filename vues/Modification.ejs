@@ -14,7 +14,6 @@
     
         <input type="submit" value="Enregistrer">
     </form>
-    <%- include partiels/Scripts.ejs %>
     <script>
             var password = document.getElementById("psdMotDePasse"),
                 confirm_password = document.getElementById("psdConfirmMotDePasse");
@@ -30,6 +29,5 @@
             password.onchange = validatePassword;
             confirm_password.onkeyup = validatePassword;
         </Script>
-</body>
 
-</html>
+<%- include partiels/Footer.ejs %>
