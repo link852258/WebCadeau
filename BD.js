@@ -91,4 +91,18 @@ module.exports = function BD() {
             callBack(results[0]);
         });
     }
+
+    this.obtenirMembreGroupe = function(groupeID,callBack){
+        pool.query('CALL LISTEMEMBREGROUPE(?)', [groupeID], (err, results, fields)=>{
+            if(err) throw err;
+            callBack(results[0]);
+        });
+    }
+
+    this.ajouterMenbre = function(groupeID,email,callBack){
+        pool.query('CALL AJOUTERMEMBRE(?,?)', [groupeID, email], (err, resutls, field)=>{
+            if(err) throw err;
+            callBack();
+        })
+    }
 }

@@ -105,11 +105,15 @@ app.post('/CreerEchange', (req, res) => {
 });
 
 app.get('/Groupe/:id',(req,res)=>{
-    res.render('Groupe');
+    conn.obtenirMembreGroupe(req.params.id, (listeMembre)=>{
+        res.render('Groupe',{ ListeMembre: listeMembre });
+    });
 });
 
-app.post('/Groupe',(req,res)=>{
-    res.render('Groupe');
+app.post('/Groupe/:id',(req,res)=>{
+    conn.ajouterMenbre(req.params.id, req.body.email, ()=>{
+        res.redirect('/Groupe/' + req.params.id);
+    });
 });
 
 app.get('/ObtenirAmis',(req,res)=>{
