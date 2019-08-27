@@ -119,18 +119,27 @@ app.post('/CreerEchange', (req, res) => {
 
 });
 
-app.get('/Groupe/:id',(req,res)=>{
+app.get('/Groupe/:id', (req, res)=>{
     conn.obtenirMembreGroupe(req.params.id, (listeMembre)=>{
         res.render('Groupe',{ ListeMembre: listeMembre });
     });
-});
+});   
+
+/*Tester pour melanger les amis
+app.get('/melanger/:id', (req, res)=>{
+    conn.obtenirMembreGroupe(req.params.id, (listeMembre)=>{
+
+        res.render('Groupe',{ ListeMembre: listeMembre });
+    });
+}); 
+*/
 
 app.post('/Groupe/:id',(req,res)=>{
     conn.ajouterMenbre(req.params.id, req.body.email, ()=>{
         res.redirect('/Groupe/' + req.params.id);
-    });
-});
-
+    });    
+});  
+   
 app.get('/ObtenirAmis',(req,res)=>{
     conn.obtenirUtilisateur((liste)=>{
         res.render('partiels/TableMembres',{Liste: liste});

@@ -32,14 +32,14 @@
             </tbody>
           </table>
         </div>
-        <button type="button" class="btn btn-primary">Ajouter/Supprimer des suggestions</button>
+        <button onclick="test();" type="button" class="btn btn-primary">Ajouter/Supprimer des suggestions</button>
       </div>
       <div>
         <p style="text-align: center">Membres de l'echange</p>
         <button type="button" class="btn btn-primary">Ajouter/Supprimer membre</button>
         <form method="POST">
-        <input type="email" name="email" id="email" required>
-        <button type="submit" class="btn btn-warning">Ajouter</button>
+          <input type="email" name="email" id="email" required>
+          <button type="submit" class="btn btn-warning">Ajouter</button>
         </form>
         <!-- TABLE DES MENBRE DU GROUPE -->
         <table class="table">
@@ -66,4 +66,46 @@
     </div>
   </div>
 </div>
+
+<script>
+  function test() {
+    var liste = [];
+    var listeAMelanger = [];
+
+    <% for (var i = 0; i < ListeMembre.length; i++) { %>
+      liste.push("<%= ListeMembre[i].EMAIL %>");
+    <% } %>
+
+    for (var i = 0; i < liste.length; i++) {
+      listeAMelanger[i] = [];
+    }
+
+    for (var i = 0; i < liste.length; i++) {
+      listeAMelanger[i][0] = liste[i];
+      listeAMelanger[i][1] = "";
+    }
+
+
+    for (var i = 0; i < listeAMelanger.length; ++i) {
+      if (listeAMelanger[i][0] == liste[i]) {
+        i = -1;
+        shuffle();
+      }
+      else {
+        listeAMelanger[i][1] = liste[i];
+      }
+    }
+  }
+
+  function shuffle() {
+      for (var i = 0; i < liste.length; i++) {
+        var rdm = Math.floor(Math.random() * liste.length);
+        var rdm2 = Math.floor(Math.random() * liste.length);
+        var temp = liste[rdm];
+        liste[rdm] = liste[rdm2];
+        liste[rdm2] = temp;
+      }
+    }
+    
+</script>
 <%- include partiels/Footer.ejs %>
