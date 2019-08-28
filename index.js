@@ -8,6 +8,8 @@ const PORT = 3000;
 var conn = new BD();
 const crypto = require('crypto');
 
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('css'));
@@ -59,8 +61,6 @@ app.post('/Connexion', (req, res) => {
     const email = req.body.email;
     conn.connexionUtilisateur(email, hashPassword, (ID) => {
         if (ID !== 0) {
-            //console.log(ID);
-            //console.log("ca marche")
             res.cookie('cookieID', ID).redirect('/Actualiter');
         }
         else {
@@ -123,23 +123,67 @@ app.get('/Groupe/:id', (req, res)=>{
     conn.obtenirMembreGroupe(req.params.id, (listeMembre)=>{
         res.render('Groupe',{ ListeMembre: listeMembre });
     });
-});   
-
-/*Tester pour melanger les amis
-app.get('/melanger/:id', (req, res)=>{
-    conn.obtenirMembreGroupe(req.params.id, (listeMembre)=>{
-
-        res.render('Groupe',{ ListeMembre: listeMembre });
-    });
 }); 
-*/
 
 app.post('/Groupe/:id',(req,res)=>{
-    conn.ajouterMenbre(req.params.id, req.body.email, ()=>{
+    conn.ajouterMembre(req.params.id, req.body.email, ()=>{
         res.redirect('/Groupe/' + req.params.id);
     });    
+    
 });  
    
+app.get('/Melanger/:id', (req, res) => {
+    conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {
+        Melanger(listeMembre, (listemel) => {
+            for (var i = 0; i < listemel.length; i++) {
+                conn.pige(req.params.id, listemel[i][0], listemel[i][1],()=>{
+                    
+                });
+            }
+        });
+        res.render('Groupe', { ListeMembre: listeMembre });
+    });
+
+    function Melanger(listeMembre, callBack) {
+        var liste = [];
+        var listeAMelanger = [];
+    
+        for (var i = 0; i < listeMembre.length; i++) {
+            liste.push(listeMembre[i].EMAIL);
+        }
+    
+        for (var i = 0; i < liste.length; i++) {
+            listeAMelanger[i] = [];
+        }
+    
+        for (var i = 0; i < liste.length; i++) {
+            listeAMelanger[i][0] = liste[i];
+            listeAMelanger[i][1] = "";
+        }
+    
+    
+        for (var i = 0; i < listeAMelanger.length; ++i) {
+            if (listeAMelanger[i][0] == liste[i]) {
+                i = -1;
+                shuffle();
+            }
+            else {
+                listeAMelanger[i][1] = liste[i];
+            }
+        }
+        function shuffle() {
+            for (var i = 0; i < liste.length; i++) {
+                var rdm = Math.floor(Math.random() * liste.length);
+                var rdm2 = Math.floor(Math.random() * liste.length);
+                var temp = liste[rdm];
+                liste[rdm] = liste[rdm2];
+                liste[rdm2] = temp;
+            }
+        }
+        callBack(listeAMelanger);
+    }
+});
+
 app.get('/ObtenirAmis',(req,res)=>{
     conn.obtenirUtilisateur((liste)=>{
         res.render('partiels/TableMembres',{Liste: liste});
