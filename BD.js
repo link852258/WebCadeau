@@ -99,10 +99,17 @@ module.exports = function BD() {
         });
     }
 
-    this.ajouterMenbre = function(groupeID,email,callBack){
-        pool.query('CALL AJOUTERMEMBRE(?,?)', [groupeID, email], (err, resutls, field)=>{
+    this.ajouterMembre = function(groupeID,email,callBack){
+        pool.query('CALL AJOUTERMEMBRE(?,?)', [groupeID, email], (err, results, fields)=>{
             if(err) throw err;
             callBack();
-        })
+        });
+    }
+
+    this.pige = function(groupeID,email,emailPiger,callBack){
+        pool.query('CALL PIGER_UTILISATEUR_APPARTIENT(?,?,?)',[groupeID,email,emailPiger],(err,results,fields)=>{
+            if(err) throw err;
+            callBack();
+        });
     }
 }
