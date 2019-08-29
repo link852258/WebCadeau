@@ -1,10 +1,22 @@
 <%- include partiels/Header.ejs %>
-<form method="POST">
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email">
-    <label for="psdMotDePasse">Mot de passe</label>
-    <input type="password" name="psdMotDePasse" id="psdMotDePasse">
-    <input type="submit" value="Soumettre">
-</form>
-
+<div class="container">
+    <div class="row justify-content-md-center ">
+        <div class="col-xl-8">
+            <form method="POST">
+                <fieldset class="border p-3">
+                    <legend>Connexion</legend>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="psdMotDePasse">Mot de passe</label>
+                        <input type="password" class="form-control" name="psdMotDePasse" id="psdMotDePasse">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Soumettre</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
 <%- include partiels/Footer.ejs %>

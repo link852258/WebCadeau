@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('css'));
 app.use(express.static('js'));
+app.use(express.static('img'));
 
 app.set('views', __dirname + '/vues');
 
