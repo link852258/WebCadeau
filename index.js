@@ -87,11 +87,11 @@ app.post('/Inscription', (req, res) => {
     res.redirect('/');
 });
 
-app.get('/modification', (req, res) => {
+app.get('/profil', (req, res) => {
     res.render('Modification')
 });
 
-app.post('/modification', (req, res) => {
+app.post('/profil', (req, res) => {
     const hash = crypto.createHash('sha256');
     const id = req.cookies.cookieID;
     const password = req.body.psdMotDePasse;

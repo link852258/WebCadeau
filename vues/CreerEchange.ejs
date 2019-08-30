@@ -1,46 +1,37 @@
 <%- include partiels/HeaderCon.ejs %>
-<form method="POST">
-    <label>Nom de l'échange</label>
-    <input type="text" name="txtTitreEchange" id="txtTitreEchange">
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-xl-8">
+            <form method="POST">
+                <fieldset class="border p-3">
+                    <legend>Création d'échange</legend>
+                    <div class="form-group">
+                        <label>Nom de l'échange</label>
+                        <input type="text" class="form-control" name="txtTitreEchange" id="txtTitreEchange">
+                    </div>
+                    <div class="form-group">
+                        <label>Date de l'echange</label>
+                        <input type="date" class="form-control" name="dteEchange" id="dteEchange">
+                    </div>
+                    <div class="form-group">
+                        <label>Montant (approximatif)</label>
+                        <input type="number" class="form-control" name="nbrMontant" id="nbrMontant">
+                    </div>
+                    <div class="form-group">
+                        <label>Theme(optionnel)</label>
+                        <input type="text" class="form-control" name="txtTheme" id="txtTheme">
+                    </div>
+                    <div class="form-group">
+                        <label>Suggestion</label>
+                        <input type="radio">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Creer Échange</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 
-    <label>Date de l'echange</label>
-    <input type="date" name="dteEchange" id="dteEchange">
-
-    <label>Montant (approximatif)</label>
-    <input type="number" name="nbrMontant" id="nbrMontant">
-
-    <label>Theme(optionnel)</label>
-    <input type="text" name="txtTheme" id="txtTheme">
-
-    <label>Suggestion</label>
-    <input type="radio">
-    <!--<input type="button" value="Ajouter des membres" data-toggle="modal" data-target="#PopupAjoutMembres">-->
-
-    <input type="submit" value="Creer Échange">
-</form>
+</div>
 <%- include partiels/Scripts.ejs %>
 <%- include popups/AjouterMembres.ejs %>
 <%- include partiels/Footer.ejs %>
-<!--TODO pour plus tard
-    <script>
-    var submitted = false;
-    $(document).ready(function () {
-        $('form').submit(function () {
-            submitted = true;
-        });
-        window.onbeforeunload = function () {
-            if (!submitted) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        return null
-                    }
-                };
-                xhttp.open("GET", "/SupprimerGroupe", true);
-                xhttp.send();
-            }
-        }
-    }
-
-    );
-</script>-->
