@@ -202,6 +202,22 @@ app.get('/GroupeAppartient', (req, res) => {
     });
 });
 
+//TODO semble fonctionner
+app.get('/ListeSuggestion', (req, res) => {
+    res.render('partiels/ListeSuggestion');
+});
+
+//TODO faire un script pour gerer le post
+app.post('/ListeSuggestion/:id', (req, res) => {
+    const groupeID = req.params.id;
+    const utilisateurID = req.cookies.cookieID;
+    const suggestion = req.body.Cadeau;
+    const description = req.body.Description;
+    conn.ajouterSuggestion(groupeID, utilisateurID, suggestion, description, () => {
+        res.render('partiels/ListeSuggestion');
+    });
+});
+
 app.get('/SupprimerGroupe', (req, res) => {
     conn.obtenirUtilisateur((liste) => {
         res.render('partiels/TableMembres', { Liste: liste });

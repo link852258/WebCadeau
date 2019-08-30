@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-6">
       <div style="margin-bottom: 40px">
-        <h3 style="text-align: center">Groupe : <%= ListeMembre[0].NOMGROUPE %></h2>
+        <h3 style="text-align: center">Groupe : <%= ListeMembre[0].NOMGROUPE %>$</h2>
           <h5 style="text-align: center">Vous avez piger : xxxxxx
         </h3>
         <p style="text-align: center">Date : xx-xx-xx</p>
@@ -32,7 +32,7 @@
             </tbody>
           </table>
         </div>
-        <button type="button" class="btn btn-primary">Ajouter/Supprimer des suggestions</button>
+        <Button id="btnSuggestion" class="btn btn-primary" data-toggle="modal" data-target="#PopupSuggestion">Ajouter/Supprimer des suggestions</Button>
       </div>
       <div>
         <% if(EstCreateur[0].ESTCREATEUR != 0) { %>

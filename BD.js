@@ -112,6 +112,13 @@ module.exports = function BD() {
             callBack();
         });
     }
+
+    this.ajouterSuggestion = function(groupeID,utilisateurID,suggestion,description,callBack){
+        pool.query('CALL INSERERSUGGESTION(?,?,?,?)',[groupeID,utilisateurID,suggestion,description],(err,results,fields)=>{
+            if(err) throw err;
+            callBack();
+        });
+    }
     this.estCreateur = function(groupeID,creatorID,callBack){
         pool.query('CALL EST_CREATEUR(?,?)',[groupeID,creatorID],(err,results,fields)=>{
             if(err) throw err;
