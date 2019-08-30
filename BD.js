@@ -112,4 +112,11 @@ module.exports = function BD() {
             callBack();
         });
     }
+
+    this.ajouterSuggestion = function(groupeID,utilisateurID,suggestion,description,callBack){
+        pool.query('CALL INSERERSUGGESTION(?,?,?,?)',[groupeID,utilisateurID,suggestion,description],(err,results,fields)=>{
+            if(err) throw err;
+            callBack();
+        });
+    }
 }

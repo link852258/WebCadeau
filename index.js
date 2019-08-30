@@ -197,6 +197,20 @@ app.get('/GroupeAppartient', (req, res) => {
     });
 });
 
+app.get('/ListeSuggestion', (req, res) => {
+    res.render('partiels/ListeSuggestion');
+});
+
+app.post('/ListeSuggestion/:id', (req, res) => {
+    const groupeID = req.params.id;
+    const utilisateurID = req.cookies.cookieID;
+    const suggestion = req.body.cadeau;
+    const description = req.body.description;
+    conn.ajouterSuggestion(groupeID, utilisateurID, suggestion, description, (listeMembre) => {
+        res.render('partiels/ListeSuggestion');
+    });
+});
+
 app.get('/SupprimerGroupe', (req, res) => {
     conn.obtenirUtilisateur((liste) => {
         res.render('partiels/TableMembres', { Liste: liste });
