@@ -197,10 +197,12 @@ app.get('/GroupeAppartient', (req, res) => {
     });
 });
 
+//TODO semble fonctionner
 app.get('/ListeSuggestion', (req, res) => {
     res.render('partiels/ListeSuggestion');
 });
 
+//TODO faire un script pour gerer le post
 app.post('/ListeSuggestion/:id', (req, res) => {
     const groupeID = req.params.id;
     const utilisateurID = req.cookies.cookieID;
