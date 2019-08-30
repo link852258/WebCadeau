@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('css'));
 app.use(express.static('js'));
+app.use(express.static('img'));
 
 app.set('views', __dirname + '/vues');
 
@@ -86,11 +87,11 @@ app.post('/Inscription', (req, res) => {
     res.redirect('/');
 });
 
-app.get('/modification', (req, res) => {
+app.get('/profil', (req, res) => {
     res.render('Modification')
 });
 
-app.post('/modification', (req, res) => {
+app.post('/profil', (req, res) => {
     const hash = crypto.createHash('sha256');
     const id = req.cookies.cookieID;
     const password = req.body.psdMotDePasse;

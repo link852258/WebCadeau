@@ -2,13 +2,38 @@
 <html>
 
 <head>
-        <link rel="stylesheet" href="/bootstrap.css" type="text/css">
-        <link rel="stylesheet" href="/style.css" type="text/css">
+    <link rel="stylesheet" href="/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <link rel="icon" href="/cadeau.png">
 </head>
 
 <body>
-        <a href="/Actualiter">Actualiter</a>
-        <a href="/Echange" data-toggle="modal" data-target="#PopupEchange">Echange</a>
-        <a href="/Ami">Ami(e)</a>
-        <a href="/Profil">Profil</a>
-        <a href="/Deconnexion">Deconnexion</a>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/Actualiter">
+            <img src="/cadeau.png" width="30" height="30">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Actualiter">Actualiter <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Echange" data-toggle="modal" data-target="#PopupEchange">Echange</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Ami">Ami(e)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Profil">Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Deconnexion">Deconnexion</a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
