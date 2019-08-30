@@ -206,9 +206,9 @@ app.get('/ListeSuggestion', (req, res) => {
 app.post('/ListeSuggestion/:id', (req, res) => {
     const groupeID = req.params.id;
     const utilisateurID = req.cookies.cookieID;
-    const suggestion = req.body.cadeau;
-    const description = req.body.description;
-    conn.ajouterSuggestion(groupeID, utilisateurID, suggestion, description, (listeMembre) => {
+    const suggestion = req.body.Cadeau;
+    const description = req.body.Description;
+    conn.ajouterSuggestion(groupeID, utilisateurID, suggestion, description, () => {
         res.render('partiels/ListeSuggestion');
     });
 });
