@@ -112,4 +112,10 @@ module.exports = function BD() {
             callBack();
         });
     }
+    this.estCreateur = function(groupeID,creatorID,callBack){
+        pool.query('CALL EST_CREATEUR(?,?)',[groupeID,creatorID],(err,results,fields)=>{
+            if(err) throw err;
+            callBack(results[0]);
+        });
+    }
 }
