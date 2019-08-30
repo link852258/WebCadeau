@@ -32,15 +32,17 @@
             </tbody>
           </table>
         </div>
-        <button id="btnPiger" type="button" class="btn btn-primary">Ajouter/Supprimer des suggestions</button>
+        <button type="button" class="btn btn-primary">Ajouter/Supprimer des suggestions</button>
       </div>
       <div>
+        <% if(EstCreateur[0].ESTCREATEUR != 0) { %>
         <p style="text-align: center">Membres de l'echange</p>
-        <button type="button" class="btn btn-primary">Ajouter/Supprimer membre</button>
+        <button id="btnPiger" type="button" class="btn btn-primary">Demarrer la pige</button>
         <form method="POST">
           <input type="email" name="email" id="email" required>
           <button type="submit" class="btn btn-warning">Ajouter</button>
         </form>
+        <% } %>
         <!-- TABLE DES MENBRE DU GROUPE -->
         <table class="table">
           <thead class="thead-dark">
