@@ -125,9 +125,14 @@ app.post('/CreerEchange', (req, res) => {
 
 app.get('/Groupe/:id', (req, res) => {
     conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {
-        conn.estCreateur(req.params.id,req.cookies.cookieID,(estCreateur)=>{
-            res.render('Groupe', { ListeMembre: listeMembre,EstCreateur:estCreateur });
-        });
+        if (listeMembre.length != 0) {
+            conn.estCreateur(req.params.id, req.cookies.cookieID, (estCreateur) => {
+                res.render('Groupe', { ListeMembre: listeMembre, EstCreateur: estCreateur });
+            });
+        }
+        else{
+            res.redirect('/');
+        }
     });
 });
 
