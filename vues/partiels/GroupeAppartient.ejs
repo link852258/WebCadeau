@@ -11,7 +11,7 @@
         <tr class="table-row" data-href="/Groupe/<%= groupe.GROUPEID %>">
             <td><%= groupe.NOMGROUPE %></td>
             <td><%= groupe.CREATEUR %></td>
-            <td><%= groupe.DATEECHANGE %></td>
+            <td><%= groupe.DATEECHANGE.toLocaleDateString(); %></td>
         </tr>
         <% }); %>
     </tbody>
