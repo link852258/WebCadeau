@@ -4,12 +4,19 @@ var cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const BD = require('./BD.js');
 const app = express();
-const PORT = 3000;
+const PORTHTTP = 80;
+const PORTHTTPS = 443;
 var conn = new BD();
 const crypto = require('crypto');
 
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const helmet = require('helmet');
 
 
+//middle-ware
+app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('css'));
@@ -236,4 +243,14 @@ app.post('/ObtenirAmisParam', (req, res) => {
     });
 });
 
-app.listen(PORT);
+
+
+/*Serveur https*/
+https.createServer({
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem'),
+    passphrase: 'allo'
+}, app).listen(PORTHTTPS);
+
+/*Serveur http*/
+http.createServer(app).listen(PORTHTTP);
