@@ -133,19 +133,21 @@ app.post('/CreerEchange', (req, res) => {
 
 });
 
+//ouvrir la page Groupe + AjouterSuggestion
 app.get('/Groupe/:id', (req, res) => {
     conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {
-        if (listeMembre.length != 0) {
-            conn.estCreateur(req.params.id, req.cookies.cookieID, (estCreateur) => {
-                res.render('Groupe', { ListeMembre: listeMembre, EstCreateur: estCreateur });
+        if (listeMembre.length != 0) {                                                  //si le nombre de membre est different de zero on ouvre la page Groupe
+            conn.estCreateur(req.params.id, req.cookies.cookieID, (estCreateur) => {    //estCreateur determine le createur du groupe
+                res.render('Groupe', { ListeMembre: listeMembre, EstCreateur: estCreateur }); //ListeMembre contient des informations sur les utilisateurs et sur l'échange
             });
         }
-        else{
+        else{                                                                              //sinon on retourne à la page Index
             res.redirect('/');
         }
     });
 });
 
+//apres le post, on ajoute un membre au groupe
 app.post('/Groupe/:id', (req, res) => {
     conn.ajouterMembre(req.params.id, req.body.email, () => {
         res.redirect('/Groupe/' + req.params.id);
