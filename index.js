@@ -27,8 +27,10 @@ app.set('views', __dirname + '/vues');
 
 app.set('view engine', 'ejs');
 
+//page index
 app.get('/', (req, res) => {
-    if (req.cookies.cookieID == null) {
+    
+    if (req.cookies.cookieID == null) { //si le cookie est vide on redirige sur la page connexion sinon actualiter
         res.redirect('Connexion');
     }
     else {
@@ -36,52 +38,51 @@ app.get('/', (req, res) => {
     }
 });
 
-app.post('/', (req, res) => {
-    res.redirect('Connexion');
-});
-
+//fonction de deconnexion, redirige sur la page de connexion
 app.get('/Deconnexion', (req, res) => {
-    res.clearCookie('cookieID');
+    res.clearCookie('cookieID');    //vide le cookie
     res.redirect('Connexion');
 });
 
 app.post('/Deconnexion', (req, res) => {
-    res.clearCookie('cookieID');
+    res.clearCookie('cookieID');    //vide le cookie
     res.redirect('Connexion');
 });
 
+//page Actialiter
 app.get('/Actualiter', (req, res) => {
-    conn.obtenirActualiter(req.cookies.cookieID, (listeActualiter) => {
+    conn.obtenirActualiter(req.cookies.cookieID, (listeActualiter) => { //listeActualiter contient les informations des derniers évènements(ajout de membres, pige)
         res.render('Actualiter', { ListeActualiter: listeActualiter });
     });
-
-    //console.log("Cookies :  ", req.cookies.cookieID);
 });
 
+//ouvre la page de connexion
 app.get('/Connexion', (req, res) => {
     res.render('index');
 });
 
+//ouvre apres le submit
 app.post('/Connexion', (req, res) => {
     const hash = crypto.createHash('sha256');
     const password = req.body.psdMotDePasse;
-    const hashPassword = hash.update(password).digest('hex');
+    const hashPassword = hash.update(password).digest('hex');   //découpage du mot de passe
     const email = req.body.email;
-    conn.connexionUtilisateur(email, hashPassword, (ID) => {
+    conn.connexionUtilisateur(email, hashPassword, (ID) => {    //si la connexion est valide alors un cookie est créé et on est redirigé sur actualité
         if (ID !== 0) {
             res.cookie('cookieID', ID).redirect('/Actualiter');
         }
-        else {
+        else {                                                  //sinon on est redirigé sur la page index
             res.redirect('/');
         }
     });
 });
 
+//ouvre la page d'inscription
 app.get('/Inscription', (req, res) => {
     res.render('Inscription');
 });
 
-//
+//apres le submit, creation du compte et redirection sur la page index
 app.post('/Inscription', (req, res) => {
     const hash = crypto.createHash('sha256');
     const username = req.body.txtNomUtilisateur;
@@ -94,10 +95,12 @@ app.post('/Inscription', (req, res) => {
     res.redirect('/');
 });
 
+//page de modification du profil
 app.get('/profil', (req, res) => {
     res.render('Modification')
 });
 
+//apres le submit, application des modification
 app.post('/profil', (req, res) => {
     const hash = crypto.createHash('sha256');
     const id = req.cookies.cookieID;
@@ -151,7 +154,7 @@ app.post('/Groupe/:id', (req, res) => {
 });
 
 app.get('/Melanger/:id', (req, res) => {
-    conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {
+    conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {  //listeMembre contient les informations des membres du groupe
         Melanger(listeMembre, (listemel) => {
             for (var i = 0; i < listemel.length; i++) {
                 conn.pige(req.params.id, listemel[i][0], listemel[i][1], () => {
@@ -162,7 +165,7 @@ app.get('/Melanger/:id', (req, res) => {
         res.render('Groupe', { ListeMembre: listeMembre });
     });
 
-    function Melanger(listeMembre, callBack) {
+    function Melanger(listeMembre, callBack) {  //fonction pour melanger les membres du groupe pour la pige
         var liste = [];
         var listeAMelanger = [];
 
@@ -254,3 +257,4 @@ https.createServer({
 
 /*Serveur http*/
 http.createServer(app).listen(PORTHTTP);
+
