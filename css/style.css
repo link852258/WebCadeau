@@ -4,6 +4,17 @@
 
 body{
     padding-top: 100px;
+    background-image: url("fonds-ecran-noel-pere-noel-2015-19.jpg");
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+}
+
+h5,p{
+    color: #990000;
+}
+
+.media{
+    background-color: #32FF24;
 }
 
 legend{
