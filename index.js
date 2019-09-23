@@ -140,15 +140,18 @@ app.post('/CreerEchange', (req, res) => {
 
 //ouvrir la page Groupe + AjouterSuggestion
 app.get('/Groupe/:id', (req, res) => {
-    conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {
-        if (listeMembre.length != 0) {                                                  //si le nombre de membre est different de zero on ouvre la page Groupe
-            conn.estCreateur(req.params.id, req.cookies.cookieID, (estCreateur) => {    //estCreateur determine le createur du groupe
-                conn.obtenirUtilisateurPiger(req.cookies.cookieID, req.params.id, (piger) => {
-                    res.render('Groupe', { ListeMembre: listeMembre, EstCreateur: estCreateur, Piger: piger }); //ListeMembre contient des informations sur les utilisateurs et sur l'échange
+    var groupeID = req.params.id
+    conn.obtenirMembreGroupe(groupeID, (listeMembre) => {
+        if (listeMembre.length != 0) {  
+            conn.obtenirInformationGroupe(groupeID,(infoGroupe)=>{
+                conn.estCreateur(groupeID, req.cookies.cookieID, (estCreateur) => {    //estCreateur determine le createur du groupe
+                    conn.obtenirUtilisateurPiger(req.cookies.cookieID, groupeID, (piger) => {
+                        res.render('Groupe', {InfoGroupe:infoGroupe, ListeMembre: listeMembre, EstCreateur: estCreateur, Piger: piger }); //ListeMembre contient des informations sur les utilisateurs et sur l'échange
+                    });
                 });
-            });
+            })                              //si le nombre de membre est different de zero on ouvre la page Groupe
         }
-        else {                                                                              //sinon on retourne à la page Index
+        else {                              //sinon on retourne à la page Index
             res.redirect('/');
         }
     });
@@ -167,9 +170,14 @@ app.post('/Melanger/:id', (req, res) => {
         if (listeMembre.length > 1) {
             Melanger(listeMembre, (listemel) => {
                 conn.pige(req.params.id, listemel, () => {
-                    res.redirect('/Groupe/' + req.params.id);
+                    conn.modifierPigeFait(req.params.id,()=>{
+                        res.redirect('/Groupe/' + req.params.id);
+                    })
                 });
             });
+        }
+        else{
+            //todo afficher une erreur
         }
     });
 });

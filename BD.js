@@ -135,4 +135,18 @@ module.exports = function BD() {
             callBack(results[0]);
         });
     }
+
+    this.obtenirInformationGroupe = function (groupeID, callBack) {
+        pool.query('CALL OBTENIR_INFORMATION_GROUPE(?)', [groupeID], (err, results, fields) => {
+            if (err) throw err;
+            callBack(results[0]);
+        });
+    }
+
+    this.modifierPigeFait = function (groupeID, callBack) {
+        pool.query('CALL MODIFIER_PIGE_FAIT(?)', [groupeID], (err, results, fields) => {
+            if (err) throw err;
+            callBack(results[0]);
+        });
+    }
 }

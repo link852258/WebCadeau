@@ -4,16 +4,17 @@
     <div class="row">
         <div class="col-6">
             <div style="margin-bottom: 40px">
-                <h3 style="text-align: center">Groupe : <%= ListeMembre[0].NOMGROUPE %></h2>
+                <h3 style="text-align: center">Groupe : <%= InfoGroupe[0].NOMGROUPE; %></h2>
                     <% if ( Piger.length !=0 ){ %>
-                        <h5 style="text-align: center">Vous avez piger : <%= Piger[0].NOMCOMPLET%>
+                        <h5 style="text-align: center">Vous avez piger : <%= Piger[0].NOMCOMPLET; %>
                     <% } %>
                 </h3>
-                <p style="text-align: center">Date : xx-xx-xx</p>
+                <p style="text-align: center">Date : <%= InfoGroupe[0].DATEECHANGE.toLocaleDateString(); %></p>
             </div>
             <div style="margin-bottom: 50px;">
-                <p style="text-align: center">Suggestion de : xxxxxxxxxx</p>
-
+                <% if ( Piger.length !=0 ){ %>
+                    <p style="text-align: center">Suggestion de : <%= Piger[0].NOMCOMPLET; %></p>
+                <% } %>
                 <!-- TABLE DES SUGGESTIONS-->
                 <table class="table">
                     <thead class="thead-dark">
@@ -38,7 +39,7 @@
                     data-target="#PopupSuggestion">Ajouter/Supprimer des suggestions</Button>
             </div>
             <div>
-                <% if(EstCreateur[0].ESTCREATEUR != 0 ) { %>
+                <% if(EstCreateur[0].ESTCREATEUR != 0 && InfoGroupe[0].PIGEFAIT == 0) { %>
                 <p style="text-align: center">Membres de l'echange</p>
                 <form method="POST" id="frmPige">
                     <button id="btnPiger" type="submit" class="btn btn-primary">Demarrer la pige</button>
@@ -54,7 +55,9 @@
                         <tr>
                             <th scope="col">Participant</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Retirer</th>
+                            <% if(InfoGroupe[0].PIGEFAIT == 0){ %>
+                                <th scope="col">Retirer</th>
+                            <% } %>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +65,9 @@
                         <tr>
                             <td><%= membre.PRENOM %></td>
                             <td><%= membre.EMAIL %></td>
-                            <td><button class="btn btn-primary">Retirer</button></td>
+                            <% if(InfoGroupe[0].PIGEFAIT == 0){ %>
+                                <td><button class="btn btn-primary">Retirer</button></td>
+                            <% } %>
                         </tr>
                         <% }); %>
                     </tbody>
