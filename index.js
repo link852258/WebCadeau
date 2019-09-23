@@ -49,7 +49,7 @@ app.post('/Deconnexion', (req, res) => {
     res.redirect('Connexion');
 });
 
-//page Actialiter
+//page Actualiter
 app.get('/Actualiter', (req, res) => {
     conn.obtenirActualiter(req.cookies.cookieID, (listeActualiter) => { //listeActualiter contient les informations des derniers évènements(ajout de membres, pige)
         res.render('Actualiter', { ListeActualiter: listeActualiter });
@@ -58,7 +58,12 @@ app.get('/Actualiter', (req, res) => {
 
 //ouvre la page de connexion
 app.get('/Connexion', (req, res) => {
-    res.render('index');
+    if (req.cookies.cookieID == null) { //si le cookie est vide on redirige sur la page connexion sinon actualiter
+        res.render('index');
+    }
+    else {
+        res.redirect('Actualiter');
+    }
 });
 
 //ouvre apres le submit

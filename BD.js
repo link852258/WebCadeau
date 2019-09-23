@@ -125,4 +125,11 @@ module.exports = function BD() {
             callBack(results[0]);
         });
     }
+
+    this.obtenirPersonnePiger = function(groupeID,utilisateurID,callBack){
+        pool.query('CALL OBTENIRPERSONNEPIGER(?,?)', [groupeID,utilisateurID],(err,resuts,fields)=>{
+            if(err) throw err;
+            callBack(results[0]);
+        });
+    }
 }
