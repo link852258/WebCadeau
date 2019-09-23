@@ -1,72 +1,79 @@
 <%- include partiels/HeaderCon.ejs %>
 
 <div class="container">
-  <div class="row">
-    <div class="col-6">
-      <div style="margin-bottom: 40px">
-        <h3 style="text-align: center">Groupe : <%= ListeMembre[0].NOMGROUPE %></h2>
-          <h5 style="text-align: center">Vous avez piger : xxxxxx
-        </h3>
-        <p style="text-align: center">Date : xx-xx-xx</p>
-      </div>
-      <div style="margin-bottom: 50px;">
-        <p style="text-align: center">Suggestion de : xxxxxxxxxx</p>
+    <div class="row">
+        <div class="col-6">
+            <div style="margin-bottom: 40px">
+                <h3 style="text-align: center">Groupe : <%= ListeMembre[0].NOMGROUPE %></h2>
+                    <% if ( Piger.length !=0 ){ %>
+                        <h5 style="text-align: center">Vous avez piger : <%= Piger[0].NOMCOMPLET%>
+                    <% } %>
+                </h3>
+                <p style="text-align: center">Date : xx-xx-xx</p>
+            </div>
+            <div style="margin-bottom: 50px;">
+                <p style="text-align: center">Suggestion de : xxxxxxxxxx</p>
 
-        <!-- TABLE DES SUGGESTIONS-->
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th style="width: 15%" scope="col">Suggestion</th>
-              <th scope="col">Description</th>
-            </tr>
-          </thead>
-        </table>
+                <!-- TABLE DES SUGGESTIONS-->
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th style="width: 15%" scope="col">Suggestion</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                </table>
 
-        <div class="scroll">
-          <table class="table">
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-              </tr>
-            </tbody>
-          </table>
+                <div class="scroll">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <Button id="btnSuggestion" class="btn btn-primary" data-toggle="modal"
+                    data-target="#PopupSuggestion">Ajouter/Supprimer des suggestions</Button>
+            </div>
+            <div>
+                <% if(EstCreateur[0].ESTCREATEUR != 0 ) { %>
+                <p style="text-align: center">Membres de l'echange</p>
+                <form method="POST" id="frmPige">
+                    <button id="btnPiger" type="submit" class="btn btn-primary">Demarrer la pige</button>
+                </form>
+                <form method="POST">
+                    <input type="email" name="email" id="email" required>
+                    <button type="submit" class="btn btn-warning">Ajouter</button>
+                </form>
+                <% } %>
+                <!-- TABLE DES MENBRE DU GROUPE -->
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Participant</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Retirer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% ListeMembre.forEach(function(membre){ %>
+                        <tr>
+                            <td><%= membre.PRENOM %></td>
+                            <td><%= membre.EMAIL %></td>
+                            <td><button class="btn btn-primary">Retirer</button></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+
+            </div>
         </div>
-        <Button id="btnSuggestion" class="btn btn-primary" data-toggle="modal" data-target="#PopupSuggestion">Ajouter/Supprimer des suggestions</Button>
-      </div>
-      <div>
-        <% if(EstCreateur[0].ESTCREATEUR != 0) { %>
-        <p style="text-align: center">Membres de l'echange</p>
-        <button id="btnPiger" type="button" class="btn btn-primary">Demarrer la pige</button>
-        <form method="POST">
-          <input type="email" name="email" id="email" required>
-          <button type="submit" class="btn btn-warning">Ajouter</button>
-        </form>
-        <% } %>
-        <!-- TABLE DES MENBRE DU GROUPE -->
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Participant</th>
-              <th scope="col">Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% ListeMembre.forEach(function(membre){ %>
-            <tr>
-              <td><%= membre.PRENOM %></td>
-              <td><%= membre.EMAIL %></td>
-            </tr>
-            <% }); %>
-          </tbody>
-        </table>
-
-      </div>
+        <div class="col-6" style="border:1px solid black;">
+            <!--Le chat ici-->
+        </div>
     </div>
-    <div class="col-6" style="border:1px solid black;">
-      <!--Le chat ici-->
-    </div>
-  </div>
 </div>
 <%- include ./popups/AjouterSuggestion.ejs %>
 <%- include partiels/Footer.ejs %>

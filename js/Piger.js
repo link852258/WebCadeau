@@ -1,9 +1,10 @@
 $(document).ready(function () {
-    $("#btnPiger").on('click',function(){
+    $("#frmPige").submit(function (e) {
+        e.preventDefault();
         var url = window.location.pathname;
-        var id = url.substring(url.lastIndexOf('/')+1);
-        $.get('/Melanger/'+id,function(data,status){
-
+        var id = url.substring(url.lastIndexOf('/') + 1);
+        $.post('/Melanger/' + id, function (data, status) {
+            location.reload(true);
         });
     });
 });
