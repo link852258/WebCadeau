@@ -140,13 +140,16 @@ app.post('/CreerEchange', (req, res) => {
 
 //ouvrir la page Groupe + AjouterSuggestion
 app.get('/Groupe/:id', (req, res) => {
-    var groupeID = req.params.id
+    var groupeID = req.params.id;
+    const utilisateurID = req.cookies.cookieID;
     conn.obtenirMembreGroupe(groupeID, (listeMembre) => {
         if (listeMembre.length != 0) {  
             conn.obtenirInformationGroupe(groupeID,(infoGroupe)=>{
                 conn.estCreateur(groupeID, req.cookies.cookieID, (estCreateur) => {    //estCreateur determine le createur du groupe
                     conn.obtenirUtilisateurPiger(req.cookies.cookieID, groupeID, (piger) => {
-                        res.render('Groupe', {InfoGroupe:infoGroupe, ListeMembre: listeMembre, EstCreateur: estCreateur, Piger: piger }); //ListeMembre contient des informations sur les utilisateurs et sur l'échange
+                        conn.obtenirSuggestions(groupeID, utilisateurID, (suggestions)=>{
+                            res.render('Groupe', {InfoGroupe:infoGroupe, ListeMembre: listeMembre, EstCreateur: estCreateur, Piger: piger, Suggestions: suggestions}); //ListeMembre contient des informations sur les utilisateurs et sur l'échange
+                        });
                     });
                 });
             })                              //si le nombre de membre est different de zero on ouvre la page Groupe

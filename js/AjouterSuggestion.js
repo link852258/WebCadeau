@@ -8,7 +8,7 @@ $(document).ready(function () {
             type: 'POST',
             data: {
                 Cadeau: $('#cadeau').val(),
-                Description: $('description').val()
+                Description: $('#description').val()
             }
         });
     });
