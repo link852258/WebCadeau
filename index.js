@@ -29,7 +29,7 @@ app.set('view engine', 'ejs');
 
 //page index
 app.get('/', (req, res) => {
-    
+
     if (req.cookies.cookieID == null) { //si le cookie est vide on redirige sur la page connexion sinon actualiter
         res.redirect('Connexion');
     }
@@ -49,7 +49,7 @@ app.post('/Deconnexion', (req, res) => {
     res.redirect('Connexion');
 });
 
-//page Actialiter
+//page Actualiter
 app.get('/Actualiter', (req, res) => {
     conn.obtenirActualiter(req.cookies.cookieID, (listeActualiter) => { //listeActualiter contient les informations des derniers évènements(ajout de membres, pige)
         res.render('Actualiter', { ListeActualiter: listeActualiter });
@@ -58,7 +58,12 @@ app.get('/Actualiter', (req, res) => {
 
 //ouvre la page de connexion
 app.get('/Connexion', (req, res) => {
-    res.render('index');
+    if (req.cookies.cookieID == null) { //si le cookie est vide on redirige sur la page connexion sinon actualiter
+        res.render('index');
+    }
+    else {
+        res.redirect('Actualiter');
+    }
 });
 
 //ouvre apres le submit
@@ -135,13 +140,18 @@ app.post('/CreerEchange', (req, res) => {
 
 //ouvrir la page Groupe + AjouterSuggestion
 app.get('/Groupe/:id', (req, res) => {
-    conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {
-        if (listeMembre.length != 0) {                                                  //si le nombre de membre est different de zero on ouvre la page Groupe
-            conn.estCreateur(req.params.id, req.cookies.cookieID, (estCreateur) => {    //estCreateur determine le createur du groupe
-                res.render('Groupe', { ListeMembre: listeMembre, EstCreateur: estCreateur }); //ListeMembre contient des informations sur les utilisateurs et sur l'échange
-            });
+    var groupeID = req.params.id
+    conn.obtenirMembreGroupe(groupeID, (listeMembre) => {
+        if (listeMembre.length != 0) {  
+            conn.obtenirInformationGroupe(groupeID,(infoGroupe)=>{
+                conn.estCreateur(groupeID, req.cookies.cookieID, (estCreateur) => {    //estCreateur determine le createur du groupe
+                    conn.obtenirUtilisateurPiger(req.cookies.cookieID, groupeID, (piger) => {
+                        res.render('Groupe', {InfoGroupe:infoGroupe, ListeMembre: listeMembre, EstCreateur: estCreateur, Piger: piger }); //ListeMembre contient des informations sur les utilisateurs et sur l'échange
+                    });
+                });
+            })                              //si le nombre de membre est different de zero on ouvre la page Groupe
         }
-        else{                                                                              //sinon on retourne à la page Index
+        else {                              //sinon on retourne à la page Index
             res.redirect('/');
         }
     });
@@ -155,61 +165,20 @@ app.post('/Groupe/:id', (req, res) => {
 
 });
 
-app.get('/Melanger/:id', (req, res) => {
+app.post('/Melanger/:id', (req, res) => {
     conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {  //listeMembre contient les informations des membres du groupe
-        Melanger(listeMembre, (listemel) => {
-            for (var i = 0; i < listemel.length; i++) {
-                conn.pige(req.params.id, listemel[i][0], listemel[i][1], () => {
-
+        if (listeMembre.length > 1) {
+            Melanger(listeMembre, (listemel) => {
+                conn.pige(req.params.id, listemel, () => {
+                    conn.modifierPigeFait(req.params.id,()=>{
+                        res.redirect('/Groupe/' + req.params.id);
+                    })
                 });
-            }
-        });
-        res.render('Groupe', { ListeMembre: listeMembre });
-    });
-
-    function Melanger(listeMembre, callBack) {  //fonction pour melanger les membres du groupe pour la pige
-        var liste = [];
-        var listeAMelanger = [];
-
-        for (var i = 0; i < listeMembre.length; i++) {
-            liste.push(listeMembre[i].EMAIL);
+            });
         }
-
-        for (var i = 0; i < liste.length; i++) {
-            listeAMelanger[i] = [];
+        else{
+            //todo afficher une erreur
         }
-
-        for (var i = 0; i < liste.length; i++) {
-            listeAMelanger[i][0] = liste[i];
-            listeAMelanger[i][1] = "";
-        }
-
-
-        for (var i = 0; i < listeAMelanger.length; ++i) {
-            if (listeAMelanger[i][0] == liste[i]) {
-                i = -1;
-                shuffle();
-            }
-            else {
-                listeAMelanger[i][1] = liste[i];
-            }
-        }
-        function shuffle() {
-            for (var i = 0; i < liste.length; i++) {
-                var rdm = Math.floor(Math.random() * liste.length);
-                var rdm2 = Math.floor(Math.random() * liste.length);
-                var temp = liste[rdm];
-                liste[rdm] = liste[rdm2];
-                liste[rdm2] = temp;
-            }
-        }
-        callBack(listeAMelanger);
-    }
-});
-
-app.get('/ObtenirAmis', (req, res) => {
-    conn.obtenirUtilisateur((liste) => {
-        res.render('partiels/TableMembres', { Liste: liste });
     });
 });
 
@@ -260,3 +229,41 @@ https.createServer({
 /*Serveur http*/
 http.createServer(app).listen(PORTHTTP);
 
+function Melanger(listeMembre, callBack) {  //fonction pour melanger les membres du groupe pour la pige
+    var liste = [];
+    var listeAMelanger = [];
+
+    for (var i = 0; i < listeMembre.length; i++) {
+        liste.push(listeMembre[i].EMAIL);
+    }
+
+    for (var i = 0; i < liste.length; i++) {
+        listeAMelanger[i] = [];
+    }
+
+    for (var i = 0; i < liste.length; i++) {
+        listeAMelanger[i][0] = liste[i];
+        listeAMelanger[i][1] = "";
+    }
+
+
+    for (var i = 0; i < listeAMelanger.length; ++i) {
+        if (listeAMelanger[i][0] == liste[i]) {
+            i = -1;
+            shuffle();
+        }
+        else {
+            listeAMelanger[i][1] = liste[i];
+        }
+    }
+    function shuffle() {
+        for (var i = 0; i < liste.length; i++) {
+            var rdm = Math.floor(Math.random() * liste.length);
+            var rdm2 = Math.floor(Math.random() * liste.length);
+            var temp = liste[rdm];
+            liste[rdm] = liste[rdm2];
+            liste[rdm2] = temp;
+        }
+    }
+    callBack(listeAMelanger);
+}
