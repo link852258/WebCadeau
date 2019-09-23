@@ -6,14 +6,14 @@
             <div style="margin-bottom: 40px">
                 <h3 style="text-align: center">Groupe : <%= InfoGroupe[0].NOMGROUPE; %></h2>
                     <% if ( Piger.length !=0 ){ %>
-                        <h5 style="text-align: center">Vous avez piger : <%= Piger[0].NOMCOMPLET; %>
-                    <% } %>
+                    <h5 style="text-align: center">Vous avez piger : <%= Piger[0].NOMCOMPLET; %>
+                        <% } %>
                 </h3>
                 <p style="text-align: center">Date : <%= InfoGroupe[0].DATEECHANGE.toLocaleDateString(); %></p>
             </div>
             <div style="margin-bottom: 50px;">
                 <% if ( Piger.length !=0 ){ %>
-                    <p style="text-align: center">Suggestion de : <%= Piger[0].NOMCOMPLET; %></p>
+                <p style="text-align: center">Suggestion de : <%= Piger[0].NOMCOMPLET; %></p>
                 <% } %>
                 <!-- TABLE DES SUGGESTIONS-->
                 <table class="table">
@@ -28,10 +28,12 @@
                 <div class="scroll">
                     <table class="table">
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
+                            <% Suggestions.forEach(function(suggestions){ %>
+                            <tr class="table-row">
+                                <td><%= suggestions.Suggestion %></td>
+                                <td><%= suggestions.DescriptionSug %></td>
                             </tr>
+                            <% }); %>
                         </tbody>
                     </table>
                 </div>
@@ -56,7 +58,7 @@
                             <th scope="col">Participant</th>
                             <th scope="col">Email</th>
                             <% if(InfoGroupe[0].PIGEFAIT == 0){ %>
-                                <th scope="col">Retirer</th>
+                            <th scope="col">Retirer</th>
                             <% } %>
                         </tr>
                     </thead>
@@ -66,7 +68,7 @@
                             <td><%= membre.PRENOM %></td>
                             <td><%= membre.EMAIL %></td>
                             <% if(InfoGroupe[0].PIGEFAIT == 0){ %>
-                                <td><button class="btn btn-primary">Retirer</button></td>
+                            <td><button class="btn btn-primary">Retirer</button></td>
                             <% } %>
                         </tr>
                         <% }); %>

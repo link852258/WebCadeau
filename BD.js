@@ -156,4 +156,11 @@ module.exports = function BD() {
             callBack(results[0]);
         });
     }
+    
+    this.obtenirSuggestions = function(groupeID,utilisateurID,callBack){
+        pool.query('CALL OBTENIR_SUGGESTIONS(?,?)', [groupeID,utilisateurID],(err,results,fields)=>{
+            if(err) throw err;
+            callBack(results[0]);
+        });
+    }
 }
