@@ -3,7 +3,7 @@ module.exports = function BD() {
     const mysql = require('mysql');
 
     var pool = mysql.createPool({
-        host: '69.17.245.17',
+        host: '69.17.245.12',
         port: '3306',
         user: 'WEBCADEAU',
         password: 'Webcadeau!',
