@@ -3,12 +3,16 @@
         <tr>
             <th>Cadeau</th>
             <th>Description</th>
+            <th>Supprimer</th>
         </tr>
     </thead>
     <tbody>
+        <% ListeMesSuggestions.forEach(function(suggestions){ %>
         <tr class="table-row">
-            <td>1</td>
-            <td>2</td>
+            <td><%= suggestions.Suggestion %></td>
+            <td><%= suggestions.DescriptionSug %></td>
+            <td><button>Supprimer</button></td>
         </tr>
+        <% }); %>
     </tbody>
 </table>

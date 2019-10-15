@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('#PopupSuggestion').on('shown.bs.modal', function (e) {
+        e.preventDefault();
         var url = window.location.pathname;
         var id = url.substring(url.lastIndexOf('/') + 1);
         var xhttp = new XMLHttpRequest();
@@ -9,7 +10,7 @@ $(document).ready(function () {
                 b.innerHTML = this.responseText;
             }
         };
-        xhttp.open("GET", "/ListeSuggestion", true);
+        xhttp.open("POST", "/ListeMesSuggestion/" + id, true);
         xhttp.send();
     });
 });

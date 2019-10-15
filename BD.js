@@ -45,25 +45,6 @@ module.exports = function BD() {
         });
     }
 
-    //Creation d'un echange
-    /*this.creerEchange = function (idCreateur, nomGroupe, theme, date, montant) {
-        this.ouvrirconnexion();
-        //creer un echange
-        conn.query('CALL CREERGROUPE(?,?,?,?,?)', [idCreateur, nomGroupe, theme, date, montant], (err, results, fields) => {
-            //va chercher le id de l'echange
-            conn.query('select DERNIERGROUPECREER(?) as idGroupe', [idCreateur], (err, results, fields) => {
-                //ajouter les participant à l'échange
-                var idGroupe = results[0].idGroupe;
-                conn.query('call AjouterMembre(?,?)', [idGroupe, idCreateur], (err, results, fields) => {
-                    for (var i = 0; i < 10; i++) {
-                        //TODO 
-                    }
-
-                });
-            });
-        });
-    }*/
-
     this.obtenirUtilisateur = function (callBack) {
         pool.query('CALL OBTENIRTOUSUTILISATEURS()', (err, results, fields) => {
             if (err) throw err;
@@ -159,6 +140,13 @@ module.exports = function BD() {
     
     this.obtenirSuggestions = function(groupeID,utilisateurID,callBack){
         pool.query('CALL OBTENIR_SUGGESTIONS(?,?)', [groupeID,utilisateurID],(err,results,fields)=>{
+            if(err) throw err;
+            callBack(results[0]);
+        });
+    }
+
+    this.obtenirMesSuggesions = function(groupeID, utilisateurID,callBack){
+        pool.query('CALL OBTENIR_MES_SUGGESTIONS(?,?)',[groupeID,utilisateurID],(err,results,fields)=>{
             if(err) throw err;
             callBack(results[0]);
         });
