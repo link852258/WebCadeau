@@ -14,6 +14,7 @@ var middlewareInscription = function(req,res,next){
     conn.insererUtilisateur(username, hashPassword, email, prenom, nom);
     next();
 }
+
 //GET la page inscription
 router.get('/Inscription', (req, res) => {
     res.render('Inscription');

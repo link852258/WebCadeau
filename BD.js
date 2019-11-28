@@ -4,7 +4,7 @@ module.exports = function BD() {
     var pool;
     this.ouvrirConnexion = function(){
         pool = mysql.createPool({
-            host: '69.17.245.12',
+            host: '69.17.245.10',
             port: '3306',
             user: 'WEBCADEAU',
             password: 'Webcadeau!',

@@ -18,6 +18,7 @@ global.conn = new BD();
 conn.ouvrirConnexion();
 
 const inscription = require('./routes/inscription');
+const profil = require('./routes/profil');
 
 //middle-ware
 app.use(helmet());
@@ -28,6 +29,7 @@ app.use(express.static('js'));
 app.use(express.static('img'));
 
 app.use(inscription);
+app.use(profil);
 
 app.set('views', __dirname + '/vues');
 
@@ -86,26 +88,6 @@ app.post('/Connexion', (req, res) => {
             res.redirect('/');
         }
     });
-});
-
-//page de modification du profil
-app.get('/profil', (req, res) => {
-    res.render('Modification')
-});
-
-//apres le submit, application des modification
-app.post('/profil', (req, res) => {
-    const hash = crypto.createHash('sha256');
-    const id = req.cookies.cookieID;
-    const password = req.body.psdMotDePasse;
-    var hashPassword = hash.update(password).digest('hex');
-    if (password === "") {
-        hashPassword = "";
-    }
-    const prenom = req.body.txtPrenom;
-    const nom = req.body.txtNom;
-    conn.modifierUtilisateur(id, hashPassword, prenom, nom);
-    res.render('Modification')
 });
 
 //Afficher la page de creation d'echange
