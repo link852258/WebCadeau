@@ -1,14 +1,16 @@
 module.exports = function BD() {
     //Base de donnée
     const mysql = require('mysql');
-
-    var pool = mysql.createPool({
-        host: '69.17.245.12',
-        port: '3306',
-        user: 'WEBCADEAU',
-        password: 'Webcadeau!',
-        database: 'WEBCADEAU'
-    });
+    var pool;
+    this.ouvrirConnexion = function(){
+        pool = mysql.createPool({
+            host: '69.17.245.12',
+            port: '3306',
+            user: 'WEBCADEAU',
+            password: 'Webcadeau!',
+            database: 'WEBCADEAU'
+        });
+    }
 
     //Ajouter un nouvel utilisateur dans la base de donnee
     this.insererUtilisateur = function (username, password, email, prenom, nom) {

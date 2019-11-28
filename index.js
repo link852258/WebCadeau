@@ -2,11 +2,9 @@
 const express = require('express');
 var cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const BD = require('./BD.js');
 const app = express();
 const PORTHTTP = 1337;
 const PORTHTTPS = 443;
-var conn = new BD();
 const crypto = require('crypto');
 
 const http = require('http');
@@ -14,6 +12,12 @@ const https = require('https');
 const fs = require('fs');
 const helmet = require('helmet');
 
+//Ouvrir la base de données
+const BD = require('./BD.js');
+global.conn = new BD();
+conn.ouvrirConnexion();
+
+const inscription = require('./routes/inscription');
 
 //middle-ware
 app.use(helmet());
@@ -22,6 +26,8 @@ app.use(cookieParser());
 app.use(express.static('css'));
 app.use(express.static('js'));
 app.use(express.static('img'));
+
+app.use(inscription);
 
 app.set('views', __dirname + '/vues');
 
@@ -80,24 +86,6 @@ app.post('/Connexion', (req, res) => {
             res.redirect('/');
         }
     });
-});
-
-//ouvre la page d'inscription
-app.get('/Inscription', (req, res) => {
-    res.render('Inscription');
-});
-
-//apres le submit, creation du compte et redirection sur la page index
-app.post('/Inscription', (req, res) => {
-    const hash = crypto.createHash('sha256');
-    const username = req.body.txtNomUtilisateur;
-    const password = req.body.psdMotDePasse;
-    const hashPassword = hash.update(password).digest('hex');
-    const email = req.body.email;
-    const prenom = req.body.txtPrenom;
-    const nom = req.body.txtNom;
-    conn.insererUtilisateur(username, hashPassword, email, prenom, nom);
-    res.redirect('/');
 });
 
 //page de modification du profil
