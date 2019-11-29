@@ -152,6 +152,7 @@ module.exports = function BD() {
             callBack(results[0]);
         });
     }
+    
     //Supprimer une de nos suggestion
     this.supprimerMaSuggesion = function (suggestionID, callBack) {
         pool.query('CALL SUPPRIMER_MA_SUGGESTION(?)', [suggestionID], (err, results, fields) => {
