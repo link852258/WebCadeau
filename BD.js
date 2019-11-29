@@ -1,14 +1,16 @@
 module.exports = function BD() {
     //Base de donnée
     const mysql = require('mysql');
-
-    var pool = mysql.createPool({
-        host: '69.17.245.12',
-        port: '3306',
-        user: 'WEBCADEAU',
-        password: 'Webcadeau!',
-        database: 'WEBCADEAU'
-    });
+    var pool;
+    this.ouvrirConnexion = function () {
+        pool = mysql.createPool({
+            host: '69.17.245.10',
+            port: '3306',
+            user: 'WEBCADEAU',
+            password: 'Webcadeau!',
+            database: 'WEBCADEAU'
+        });
+    }
 
     //Ajouter un nouvel utilisateur dans la base de donnee
     this.insererUtilisateur = function (username, password, email, prenom, nom) {
@@ -37,11 +39,10 @@ module.exports = function BD() {
     }
 
     //Creation d'un echange
-    this.creerEchange = function (idCreateur, nomGroupe, theme, date, montant, callBack) {
+    this.creerEchange = function (idCreateur, nomGroupe, theme, date, montant) {
         //creer un echange
         pool.query('CALL CREERGROUPE(?,?,?,?,?)', [idCreateur, nomGroupe, theme, date, montant], (err, results, fields) => {
             if (err) throw err;
-            callBack();
         });
     }
 
@@ -131,23 +132,31 @@ module.exports = function BD() {
         });
     }
 
-    this.obtenirPersonnePiger = function(groupeID,utilisateurID,callBack){
-        pool.query('CALL OBTENIRPERSONNEPIGER(?,?)', [groupeID,utilisateurID],(err,resuts,fields)=>{
-            if(err) throw err;
-            callBack(results[0]);
-        });
-    }
-    
-    this.obtenirSuggestions = function(groupeID,utilisateurID,callBack){
-        pool.query('CALL OBTENIR_SUGGESTIONS(?,?)', [groupeID,utilisateurID],(err,results,fields)=>{
-            if(err) throw err;
+    this.obtenirPersonnePiger = function (groupeID, utilisateurID, callBack) {
+        pool.query('CALL OBTENIRPERSONNEPIGER(?,?)', [groupeID, utilisateurID], (err, resuts, fields) => {
+            if (err) throw err;
             callBack(results[0]);
         });
     }
 
-    this.obtenirMesSuggesions = function(groupeID, utilisateurID,callBack){
-        pool.query('CALL OBTENIR_MES_SUGGESTIONS(?,?)',[groupeID,utilisateurID],(err,results,fields)=>{
-            if(err) throw err;
+    this.obtenirSuggestions = function (groupeID, utilisateurID, callBack) {
+        pool.query('CALL OBTENIR_SUGGESTIONS(?,?)', [groupeID, utilisateurID], (err, results, fields) => {
+            if (err) throw err;
+            callBack(results[0]);
+        });
+    }
+
+    this.obtenirMesSuggesions = function (groupeID, utilisateurID, callBack) {
+        pool.query('CALL OBTENIR_MES_SUGGESTIONS(?,?)', [groupeID, utilisateurID], (err, results, fields) => {
+            if (err) throw err;
+            callBack(results[0]);
+        });
+    }
+    
+    //Supprimer une de nos suggestion
+    this.supprimerMaSuggesion = function (suggestionID, callBack) {
+        pool.query('CALL SUPPRIMER_MA_SUGGESTION(?)', [suggestionID], (err, results, fields) => {
+            if (err) throw err;
             callBack(results[0]);
         });
     }

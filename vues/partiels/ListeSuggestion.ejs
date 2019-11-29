@@ -11,7 +11,7 @@
         <tr class="table-row">
             <td><%= suggestions.Suggestion %></td>
             <td><%= suggestions.DescriptionSug %></td>
-            <td><button>Supprimer</button></td>
+            <td><button onclick="supprimerSuggestion(this);"  value="<%= suggestions.SuggestionID %>">Supprimer</button></td>
         </tr>
         <% }); %>
     </tbody>
