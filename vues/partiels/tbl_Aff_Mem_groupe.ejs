@@ -1,22 +1,9 @@
-<table class="table">
-        <thead>
-            <tr>
-                <th scope="col">
-                    #
-                </th>
-                <th scope="col">
-                    Prenom
-                </th>
-                <th scope="col">
-                    Nom
-                </th>
-                <th scope="col">
-                    email
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <!--TODO-->
-        </tbody>
-
-    </table>
+<tbody>
+    <% ListeMesSuggestions.forEach(function(suggestions){ %>
+    <tr class="table-row">
+        <td><%= suggestions.Suggestion %></td>
+        <td><%= suggestions.DescriptionSug %></td>
+        <td><button type="submit">Supprimer</button></td>
+    </tr>
+    <% }); %>
+</tbody>

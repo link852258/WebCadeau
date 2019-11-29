@@ -2,11 +2,9 @@
 const express = require('express');
 var cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const BD = require('./BD.js');
 const app = express();
 const PORTHTTP = 1337;
 const PORTHTTPS = 443;
-var conn = new BD();
 const crypto = require('crypto');
 
 const http = require('http');
@@ -14,6 +12,15 @@ const https = require('https');
 const fs = require('fs');
 const helmet = require('helmet');
 
+//Ouvrir la base de données
+const BD = require('./BD.js');
+global.conn = new BD();
+conn.ouvrirConnexion();
+
+const inscription = require('./routes/inscription');
+const profil = require('./routes/profil');
+const groupe = require('./routes/groupe');
+const creerEchange = require('./routes/creerEchange');
 
 //middle-ware
 app.use(helmet());
@@ -22,6 +29,11 @@ app.use(cookieParser());
 app.use(express.static('css'));
 app.use(express.static('js'));
 app.use(express.static('img'));
+
+app.use(inscription);
+app.use(profil);
+app.use(groupe);
+app.use(creerEchange);
 
 app.set('views', __dirname + '/vues');
 
@@ -82,91 +94,6 @@ app.post('/Connexion', (req, res) => {
     });
 });
 
-//ouvre la page d'inscription
-app.get('/Inscription', (req, res) => {
-    res.render('Inscription');
-});
-
-//apres le submit, creation du compte et redirection sur la page index
-app.post('/Inscription', (req, res) => {
-    const hash = crypto.createHash('sha256');
-    const username = req.body.txtNomUtilisateur;
-    const password = req.body.psdMotDePasse;
-    const hashPassword = hash.update(password).digest('hex');
-    const email = req.body.email;
-    const prenom = req.body.txtPrenom;
-    const nom = req.body.txtNom;
-    conn.insererUtilisateur(username, hashPassword, email, prenom, nom);
-    res.redirect('/');
-});
-
-//page de modification du profil
-app.get('/profil', (req, res) => {
-    res.render('Modification')
-});
-
-//apres le submit, application des modification
-app.post('/profil', (req, res) => {
-    const hash = crypto.createHash('sha256');
-    const id = req.cookies.cookieID;
-    const password = req.body.psdMotDePasse;
-    var hashPassword = hash.update(password).digest('hex');
-    if (password === "") {
-        hashPassword = "";
-    }
-    const prenom = req.body.txtPrenom;
-    const nom = req.body.txtNom;
-    conn.modifierUtilisateur(id, hashPassword, prenom, nom);
-    res.render('Modification')
-});
-
-//Afficher la page de creation d'echange
-app.get('/CreerEchange', (req, res) => {
-    res.render('CreerEchange');
-});
-
-//Appliquer le post lorsque le groupe sera creer
-app.post('/CreerEchange', (req, res) => {
-    const id = req.cookies.cookieID;
-    const nomGroupe = req.body.txtTitreEchange;
-    const theme = req.body.txtTheme;
-    const date = req.body.dteEchange;
-    const montant = req.body.nbrMontant;
-    conn.creerEchange(id, nomGroupe, theme, date, montant, () => {
-        res.render('CreerEchange');
-    });
-
-});
-
-//ouvrir la page Groupe + AjouterSuggestion
-app.get('/Groupe/:id', (req, res) => {
-    var groupeID = req.params.id;
-    const utilisateurID = req.cookies.cookieID;
-    conn.obtenirMembreGroupe(groupeID, (listeMembre) => {
-        if (listeMembre.length != 0) {  
-            conn.obtenirInformationGroupe(groupeID,(infoGroupe)=>{
-                conn.estCreateur(groupeID, req.cookies.cookieID, (estCreateur) => {    //estCreateur determine le createur du groupe
-                    conn.obtenirUtilisateurPiger(req.cookies.cookieID, groupeID, (piger) => {
-                        conn.obtenirSuggestions(groupeID, utilisateurID, (suggestions)=>{
-                            res.render('Groupe', {InfoGroupe:infoGroupe, ListeMembre: listeMembre, EstCreateur: estCreateur, Piger: piger, Suggestions: suggestions}); //ListeMembre contient des informations sur les utilisateurs et sur l'échange
-                        });
-                    });
-                });
-            })                              //si le nombre de membre est different de zero on ouvre la page Groupe
-        }
-        else {                              //sinon on retourne à la page Index
-            res.redirect('/');
-        }
-    });
-});
-
-//apres le post, on ajoute un membre au groupe
-app.post('/Groupe/:id', (req, res) => {
-    conn.ajouterMembre(req.params.id, req.body.email, () => {
-        res.redirect('/Groupe/' + req.params.id);
-    });
-
-});
 
 app.post('/Melanger/:id', (req, res) => {
     conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {  //listeMembre contient les informations des membres du groupe
@@ -192,8 +119,13 @@ app.get('/GroupeAppartient', (req, res) => {
 });
 
 //TODO semble fonctionner
-app.get('/ListeSuggestion', (req, res) => {
-    res.render('partiels/ListeSuggestion');
+app.post('/ListeMesSuggestion/:id', (req, res) => {
+    const groupeID = req.params.id;
+    const utilisateurID = req.cookies.cookieID;
+    conn.obtenirMesSuggesions(groupeID,utilisateurID,(listeMesSuggestions)=>{
+        res.render('partiels/ListeSuggestion',{ListeMesSuggestions: listeMesSuggestions});
+    });
+    //res.render('partiels/ListeSuggestion');
 });
 
 //TODO faire un script pour gerer le post
@@ -203,7 +135,10 @@ app.post('/ListeSuggestion/:id', (req, res) => {
     const suggestion = req.body.Cadeau;
     const description = req.body.Description;
     conn.ajouterSuggestion(groupeID, utilisateurID, suggestion, description, () => {
-        res.render('partiels/ListeSuggestion');
+        conn.obtenirMesSuggesions(groupeID,utilisateurID,(listeMesSuggestions)=>{
+            res.render('partiels/ListeSuggestion',{ListeMesSuggestions: listeMesSuggestions});
+        });
+        
     });
 });
 

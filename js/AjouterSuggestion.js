@@ -1,8 +1,8 @@
 $(document).ready(function () {
     $('#frmAjoutSuggestion').submit(function (e) {
+        e.preventDefault();
         var url = window.location.pathname;
         var id = url.substring(url.lastIndexOf('/') + 1);
-        e.preventDefault();
         $.ajax({
             url: '/ListeSuggestion/' + id,
             type: 'POST',
@@ -10,6 +10,12 @@ $(document).ready(function () {
                 Cadeau: $('#cadeau').val(),
                 Description: $('#description').val()
             }
+        })
+        .done(function(data){
+            $('#cadeau').val('');
+            $('#description').val('');
+            $('.liste').empty();
+            $('.liste').append(data);
         });
     });
 });
