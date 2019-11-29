@@ -2,7 +2,7 @@ module.exports = function BD() {
     //Base de donnée
     const mysql = require('mysql');
     var pool;
-    this.ouvrirConnexion = function(){
+    this.ouvrirConnexion = function () {
         pool = mysql.createPool({
             host: '69.17.245.10',
             port: '3306',
@@ -133,23 +133,30 @@ module.exports = function BD() {
         });
     }
 
-    this.obtenirPersonnePiger = function(groupeID,utilisateurID,callBack){
-        pool.query('CALL OBTENIRPERSONNEPIGER(?,?)', [groupeID,utilisateurID],(err,resuts,fields)=>{
-            if(err) throw err;
-            callBack(results[0]);
-        });
-    }
-    
-    this.obtenirSuggestions = function(groupeID,utilisateurID,callBack){
-        pool.query('CALL OBTENIR_SUGGESTIONS(?,?)', [groupeID,utilisateurID],(err,results,fields)=>{
-            if(err) throw err;
+    this.obtenirPersonnePiger = function (groupeID, utilisateurID, callBack) {
+        pool.query('CALL OBTENIRPERSONNEPIGER(?,?)', [groupeID, utilisateurID], (err, resuts, fields) => {
+            if (err) throw err;
             callBack(results[0]);
         });
     }
 
-    this.obtenirMesSuggesions = function(groupeID, utilisateurID,callBack){
-        pool.query('CALL OBTENIR_MES_SUGGESTIONS(?,?)',[groupeID,utilisateurID],(err,results,fields)=>{
-            if(err) throw err;
+    this.obtenirSuggestions = function (groupeID, utilisateurID, callBack) {
+        pool.query('CALL OBTENIR_SUGGESTIONS(?,?)', [groupeID, utilisateurID], (err, results, fields) => {
+            if (err) throw err;
+            callBack(results[0]);
+        });
+    }
+
+    this.obtenirMesSuggesions = function (groupeID, utilisateurID, callBack) {
+        pool.query('CALL OBTENIR_MES_SUGGESTIONS(?,?)', [groupeID, utilisateurID], (err, results, fields) => {
+            if (err) throw err;
+            callBack(results[0]);
+        });
+    }
+    //Supprimer une de nos suggestion
+    this.supprimerMaSuggesion = function (suggestionID, callBack) {
+        pool.query('CALL SUPPRIMER_MA_SUGGESTION(?)', [suggestionID], (err, results, fields) => {
+            if (err) throw err;
             callBack(results[0]);
         });
     }

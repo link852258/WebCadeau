@@ -19,6 +19,7 @@ conn.ouvrirConnexion();
 
 const inscription = require('./routes/inscription');
 const profil = require('./routes/profil');
+const groupe = require('./routes/groupe');
 
 //middle-ware
 app.use(helmet());
@@ -30,6 +31,7 @@ app.use(express.static('img'));
 
 app.use(inscription);
 app.use(profil);
+app.use(groupe);
 
 app.set('views', __dirname + '/vues');
 
@@ -104,36 +106,6 @@ app.post('/CreerEchange', (req, res) => {
     const montant = req.body.nbrMontant;
     conn.creerEchange(id, nomGroupe, theme, date, montant, () => {
         res.render('CreerEchange');
-    });
-
-});
-
-//ouvrir la page Groupe + AjouterSuggestion
-app.get('/Groupe/:id', (req, res) => {
-    var groupeID = req.params.id;
-    const utilisateurID = req.cookies.cookieID;
-    conn.obtenirMembreGroupe(groupeID, (listeMembre) => {
-        if (listeMembre.length != 0) {  
-            conn.obtenirInformationGroupe(groupeID,(infoGroupe)=>{
-                conn.estCreateur(groupeID, req.cookies.cookieID, (estCreateur) => {    //estCreateur determine le createur du groupe
-                    conn.obtenirUtilisateurPiger(req.cookies.cookieID, groupeID, (piger) => {
-                        conn.obtenirSuggestions(groupeID, utilisateurID, (suggestions)=>{
-                            res.render('Groupe', {InfoGroupe:infoGroupe, ListeMembre: listeMembre, EstCreateur: estCreateur, Piger: piger, Suggestions: suggestions}); //ListeMembre contient des informations sur les utilisateurs et sur l'échange
-                        });
-                    });
-                });
-            })                              //si le nombre de membre est different de zero on ouvre la page Groupe
-        }
-        else {                              //sinon on retourne à la page Index
-            res.redirect('/');
-        }
-    });
-});
-
-//apres le post, on ajoute un membre au groupe
-app.post('/Groupe/:id', (req, res) => {
-    conn.ajouterMembre(req.params.id, req.body.email, () => {
-        res.redirect('/Groupe/' + req.params.id);
     });
 
 });
