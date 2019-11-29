@@ -39,11 +39,10 @@ module.exports = function BD() {
     }
 
     //Creation d'un echange
-    this.creerEchange = function (idCreateur, nomGroupe, theme, date, montant, callBack) {
+    this.creerEchange = function (idCreateur, nomGroupe, theme, date, montant) {
         //creer un echange
         pool.query('CALL CREERGROUPE(?,?,?,?,?)', [idCreateur, nomGroupe, theme, date, montant], (err, results, fields) => {
             if (err) throw err;
-            callBack();
         });
     }
 

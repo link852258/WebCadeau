@@ -20,6 +20,7 @@ conn.ouvrirConnexion();
 const inscription = require('./routes/inscription');
 const profil = require('./routes/profil');
 const groupe = require('./routes/groupe');
+const creerEchange = require('./routes/creerEchange');
 
 //middle-ware
 app.use(helmet());
@@ -32,6 +33,7 @@ app.use(express.static('img'));
 app.use(inscription);
 app.use(profil);
 app.use(groupe);
+app.use(creerEchange);
 
 app.set('views', __dirname + '/vues');
 
@@ -92,23 +94,6 @@ app.post('/Connexion', (req, res) => {
     });
 });
 
-//Afficher la page de creation d'echange
-app.get('/CreerEchange', (req, res) => {
-    res.render('CreerEchange');
-});
-
-//Appliquer le post lorsque le groupe sera creer
-app.post('/CreerEchange', (req, res) => {
-    const id = req.cookies.cookieID;
-    const nomGroupe = req.body.txtTitreEchange;
-    const theme = req.body.txtTheme;
-    const date = req.body.dteEchange;
-    const montant = req.body.nbrMontant;
-    conn.creerEchange(id, nomGroupe, theme, date, montant, () => {
-        res.render('CreerEchange');
-    });
-
-});
 
 app.post('/Melanger/:id', (req, res) => {
     conn.obtenirMembreGroupe(req.params.id, (listeMembre) => {  //listeMembre contient les informations des membres du groupe
