@@ -31,6 +31,7 @@ router.post('/Groupe/:id', (req, res) => {
     });
 });
 
+//DELETE supprime une suggestion dans la liste de nos suggestion.
 router.delete('/Delete/Suggestion', (req, res) => {
     const suggestionID = req.body.SuggestionID;
     const groupeID = req.body.GroupeID;
